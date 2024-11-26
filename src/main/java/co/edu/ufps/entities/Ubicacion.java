@@ -28,4 +28,8 @@ public class Ubicacion {
 	@OneToMany(mappedBy = "ubicacion_id", cascade = CascadeType.ALL)
 	@JsonIgnore
 	List<Programacion> programaciones = null;
+	
+	@OneToMany(mappedBy = "ubicacion", cascade = CascadeType.ALL)
+	@JsonIgnore
+	List<Sesion> sesiones;
 }

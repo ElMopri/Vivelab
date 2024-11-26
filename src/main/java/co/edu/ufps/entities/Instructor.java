@@ -31,4 +31,8 @@ public class Instructor {
 	@OneToMany(mappedBy = "instructor_id", cascade = CascadeType.ALL)
 	@JsonIgnore
 	List<Programacion> programaciones = null;
+	
+	@OneToMany(mappedBy = "instructor", cascade = CascadeType.ALL)
+	@JsonIgnore
+	List<Sesion> sesiones;
 }

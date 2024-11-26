@@ -1,11 +1,12 @@
 package co.edu.ufps.entities;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,29 +19,33 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "colegio")
-public class Colegio {
+@Table(name = "sesion")
+public class Sesion {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(length = 200)
-	private String nombre;
+	private LocalDate fecha;
+	
+	private LocalTime hora;
+	
+	@OneToMany(mappedBy = "sesion", cascade = CascadeType.ALL)
+	@JsonIgnore
+	List<Asistente> asistentes;
+	
+	@OneToMany(mappedBy = "sesion", cascade = CascadeType.ALL)
+	@JsonIgnore
+	List<Evidencia> evidencias;
 	
 	@ManyToOne
-	@JoinColumn(name = "municipio_id")
-	private Municipio municipio_id;
+	@JoinColumn(name = "programacion_id")
+	private Programacion programacion;
 	
-	@Column(length = 50)
-	private String dane;
+	@ManyToOne
+	@JoinColumn(name = "instructor_id")
+	private Instructor instructor;
 	
-	@OneToMany(mappedBy = "colegio_id", cascade = CascadeType.ALL)
-	@JsonIgnore
-	List<Programacion> programaciones = null;
-	
-	@OneToMany(mappedBy = "colegio", cascade = CascadeType.ALL)
-	@JsonIgnore
-	List<Participante> participantes;
-	
-	
+	@ManyToOne
+	@JoinColumn(name = "ubicacion_id")
+	private Ubicacion ubicacion;
 }
