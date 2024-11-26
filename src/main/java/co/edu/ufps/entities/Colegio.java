@@ -37,4 +37,8 @@ public class Colegio {
 	@OneToMany(mappedBy = "colegio_id", cascade = CascadeType.ALL)
 	@JsonIgnore
 	List<Programacion> programaciones = null;
+	
+	@OneToMany(mappedBy = "colegio", cascade = CascadeType.ALL)
+	@JsonIgnore
+	List<Participante> participantes;
 }
