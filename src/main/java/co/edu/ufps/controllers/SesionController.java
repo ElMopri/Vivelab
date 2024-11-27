@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.edu.ufps.entities.Asistente;
 import co.edu.ufps.entities.Sesion;
 import co.edu.ufps.services.SesionService;
 
@@ -27,14 +28,14 @@ public class SesionController {
 		return ResponseEntity.ok(sesionService.list());
 	}
 
-	@GetMapping("/{programacion_id}")
-	public ResponseEntity<List<Sesion>> listByProgramacion_id(@PathVariable Integer programacion_id) {
-		return ResponseEntity.ok(sesionService.listByProgramacion_id(programacion_id));
+	@GetMapping("/{programacionId}")
+	public ResponseEntity<List<Sesion>> listByProgramacionId(@PathVariable Integer programacionId) {
+		return ResponseEntity.ok(sesionService.listByProgramacionId(programacionId));
 	}
 
-	@PostMapping("/{sesion_id}/asistencias")
-	public ResponseEntity<Sesion> registrarAsistencia(@PathVariable Integer sesion_id, @RequestBody Integer participante_id) {
-		return ResponseEntity.ok(sesionService.registrarAsistencia(sesion_id, participante_id));
+	@PostMapping("/{sesionId}/asistencias")
+	public ResponseEntity<Asistente> registrarAsistencia(@PathVariable Integer sesionId, @RequestBody Integer participanteId) {
+		return ResponseEntity.ok(sesionService.registrarAsistencia(sesionId, participanteId));
 	}
 	
 	@GetMapping("/{id}")

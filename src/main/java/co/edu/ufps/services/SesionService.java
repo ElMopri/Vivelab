@@ -5,8 +5,6 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import co.edu.ufps.entities.Asistente;
 import co.edu.ufps.entities.Participante;
@@ -35,19 +33,24 @@ public class SesionService {
 		return sesionRepository.findAll();
 	}
 
-	public List<Sesion> listByProgramacion_id(Integer programacion_id) {
-		Optional<Programacion> programacionOpt = programacionRepository.findById(programacion_id);
+	public List<Sesion> listByProgramacionId(Integer programacionId) {
+		Optional<Programacion> programacionOpt = programacionRepository.findById(programacionId);
 		if (programacionOpt.isPresent()) {
 			return programacionOpt.get().getSesiones();
 		}
 		return null;
 	}
 	
-	public Sesion registrarAsistencia(Integer sesion_id, Integer participante_id) {
-		Optional<Sesion> sesionOpt = sesionRepository.findById(sesion_id);
-		Optional<Participante> participanteOpt = participanteRepository.findById(participante_id);
+	public Asistente registrarAsistencia(Integer sesionId, Integer participanteId) {
+		Optional<Sesion> sesionOpt = sesionRepository.findById(sesionId);
+		Optional<Participante> participanteOpt = participanteRepository.findById(participanteId);
 		if (sesionOpt.isPresent() && participanteOpt.isPresent()) {
-			return sesionOpt.get();
+			Sesion sesion = sesionOpt.get();
+			Participante participante = participanteOpt.get();
+			if(!asistenteRepository.existsBySesionAndParticipante(sesion, participante)) {
+				Asistente asistente = new Asistente(sesion, participante);
+				return asistenteRepository.save(asistente);
+			}
 		}
 		return null;
 	}

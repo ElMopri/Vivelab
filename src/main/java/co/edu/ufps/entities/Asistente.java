@@ -15,6 +15,12 @@ import lombok.Data;
 @Entity
 @Table(name = "asistente", uniqueConstraints = {@UniqueConstraint(columnNames = {"sesion_id", "participante_id"})})
 public class Asistente {
+	
+	public Asistente(Sesion sesion, Participante participante) {
+		this.sesion = sesion;
+		this.participante = participante;
+	}
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
