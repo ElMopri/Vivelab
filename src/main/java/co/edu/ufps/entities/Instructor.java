@@ -28,11 +28,11 @@ public class Instructor {
 	@Column(length = 15)
 	private String documento;
 	
-	@OneToMany(mappedBy = "instructor_id", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "instructor", cascade = CascadeType.ALL)
 	@JsonIgnore
 	List<Programacion> programaciones = null;
 	
-	@OneToMany(mappedBy = "instructor_id", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "instructor", cascade = CascadeType.ALL)
 	@JsonIgnore
 	List<Sesion> sesiones = null;
 }

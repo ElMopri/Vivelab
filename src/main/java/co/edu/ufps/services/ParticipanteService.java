@@ -37,8 +37,8 @@ public class ParticipanteService {
 		}
 		Participante updatedParticipante = participanteOpt.get();
 		updatedParticipante.setNombre(participante.getNombre());
-		updatedParticipante.setColegio_id(participante.getColegio_id());
-		updatedParticipante.setTipo_documento_id(participante.getTipo_documento_id());
+		updatedParticipante.setColegio(participante.getColegio());
+		updatedParticipante.setTipoDocumento(participante.getTipoDocumento());
 		return participanteRepository.save(updatedParticipante);
 	}
 

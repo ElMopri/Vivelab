@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import co.edu.ufps.entities.Asistente;
 
-public interface AsistenteRepository extends JpaRepository<Asistente, Integer>{
+public interface AsistenteRepository extends JpaRepository<Asistente, Integer> {
 
 }

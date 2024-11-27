@@ -22,11 +22,11 @@ public class Inscripcion {
 	
 	@ManyToOne
 	@JoinColumn(name = "participante_id")
-	private Participante participante_id;
+	private Participante participante;
 	
 	@ManyToOne
 	@JoinColumn(name = "programacion_id")
-	private Programacion programacion_id;
+	private Programacion programacion;
 	
 	private LocalDate fecha;
 }

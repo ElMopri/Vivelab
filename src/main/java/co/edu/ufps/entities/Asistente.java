@@ -21,9 +21,9 @@ public class Asistente {
 	
 	@ManyToOne
 	@JoinColumn(name = "sesion_id")
-	private Sesion sesion_id;
+	private Sesion sesion;
 	
 	@ManyToOne
 	@JoinColumn(name = "participante_id")
-	private Participante participante_id;
+	private Participante participante;
 }

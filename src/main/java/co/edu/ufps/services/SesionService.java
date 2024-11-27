@@ -5,9 +5,15 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import co.edu.ufps.entities.Asistente;
+import co.edu.ufps.entities.Participante;
 import co.edu.ufps.entities.Programacion;
 import co.edu.ufps.entities.Sesion;
+import co.edu.ufps.repositories.AsistenteRepository;
+import co.edu.ufps.repositories.ParticipanteRepository;
 import co.edu.ufps.repositories.ProgramacionRepository;
 import co.edu.ufps.repositories.SesionRepository;
 
@@ -18,7 +24,13 @@ public class SesionService {
 	
 	@Autowired
 	private ProgramacionRepository programacionRepository;
+	
+	@Autowired
+	private AsistenteRepository asistenteRepository;
 
+	@Autowired
+	private ParticipanteRepository participanteRepository;
+	
 	public List<Sesion> list() {
 		return sesionRepository.findAll();
 	}
@@ -27,6 +39,15 @@ public class SesionService {
 		Optional<Programacion> programacionOpt = programacionRepository.findById(programacion_id);
 		if (programacionOpt.isPresent()) {
 			return programacionOpt.get().getSesiones();
+		}
+		return null;
+	}
+	
+	public Sesion registrarAsistencia(Integer sesion_id, Integer participante_id) {
+		Optional<Sesion> sesionOpt = sesionRepository.findById(sesion_id);
+		Optional<Participante> participanteOpt = participanteRepository.findById(participante_id);
+		if (sesionOpt.isPresent() && participanteOpt.isPresent()) {
+			return sesionOpt.get();
 		}
 		return null;
 	}
@@ -51,8 +72,8 @@ public class SesionService {
 		Sesion updatedSesion = sesionOpt.get();
 		updatedSesion.setFecha(sesion.getFecha());
 		updatedSesion.setHora(sesion.getHora());
-		updatedSesion.setProgramacion_id(sesion.getProgramacion_id());
-		updatedSesion.setInstructor_id(sesion.getInstructor_id());
+		updatedSesion.setProgramacion(sesion.getProgramacion());
+		updatedSesion.setInstructor(sesion.getInstructor());
 		return sesionRepository.save(updatedSesion);
 	}
 

@@ -37,7 +37,7 @@ public class ColegioService {
 		}
 		Colegio updatedColegio = colegioOpt.get();
 		updatedColegio.setNombre(colegio.getNombre());
-		updatedColegio.setMunicipio_id(colegio.getMunicipio_id());
+		updatedColegio.setMunicipio(colegio.getMunicipio());
 		updatedColegio.setDane(colegio.getDane());
 		return colegioRepository.save(updatedColegio);
 	}

@@ -23,7 +23,7 @@ public class Evidencia {
 	
 	@ManyToOne
 	@JoinColumn(name = "sesion_id")
-	private Sesion sesion_id;
+	private Sesion sesion;
 	
 	@Column(columnDefinition = "TEXT")
 	private String observaciones;

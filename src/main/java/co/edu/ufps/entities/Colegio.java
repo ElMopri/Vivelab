@@ -29,16 +29,16 @@ public class Colegio {
 	
 	@ManyToOne
 	@JoinColumn(name = "municipio_id")
-	private Municipio municipio_id;
+	private Municipio municipio;
 	
 	@Column(length = 50)
 	private String dane;
 	
-	@OneToMany(mappedBy = "colegio_id", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "colegio", cascade = CascadeType.ALL)
 	@JsonIgnore
 	List<Programacion> programaciones = null;
 	
-	@OneToMany(mappedBy = "colegio_id", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "colegio", cascade = CascadeType.ALL)
 	@JsonIgnore
 	List<Participante> participantes = null;
 	

@@ -28,7 +28,7 @@ public class Taller {
 	@Column(columnDefinition = "TEXT")
 	private String descripcion;
 	
-	@OneToMany(mappedBy = "taller_id", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "taller", cascade = CascadeType.ALL)
 	@JsonIgnore
 	List<Programacion> programaciones = null;
 }

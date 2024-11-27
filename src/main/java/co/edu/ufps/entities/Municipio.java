@@ -28,7 +28,7 @@ public class Municipio {
 	@Column(length = 10)
 	private String dane;
 	
-	@OneToMany(mappedBy = "municipio_id", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "municipio", cascade = CascadeType.ALL)
 	@JsonIgnore
 	List<Colegio> colegios = null;
 }

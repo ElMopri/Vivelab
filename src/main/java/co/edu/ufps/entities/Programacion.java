@@ -27,11 +27,11 @@ public class Programacion {
 	
 	@ManyToOne
 	@JoinColumn(name = "colegio_id")
-	private Colegio colegio_id;
+	private Colegio colegio;
 	
 	@ManyToOne
 	@JoinColumn(name = "taller_id")
-	private Taller taller_id;
+	private Taller taller;
 	
 	private LocalDate fecha_inicio;
 	
@@ -44,7 +44,7 @@ public class Programacion {
 	
 	@ManyToOne
 	@JoinColumn(name = "instructor_id")
-	private Instructor instructor_id;
+	private Instructor instructor;
 	
 	private Integer grado;
 	
@@ -53,13 +53,13 @@ public class Programacion {
 	
 	@ManyToOne
 	@JoinColumn(name = "ubicacion_id")
-	private Ubicacion ubicacion_id;
+	private Ubicacion ubicacion;
 	
-	@OneToMany(mappedBy = "programacion_id", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "programacion", cascade = CascadeType.ALL)
 	@JsonIgnore
 	List<Sesion> sesiones;
 	
-	@OneToMany(mappedBy = "programacion_id", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "programacion", cascade = CascadeType.ALL)
 	@JsonIgnore
 	List<Inscripcion> inscripciones;
 }

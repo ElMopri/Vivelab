@@ -31,21 +31,21 @@ public class Sesion {
 	
 	@ManyToOne
 	@JoinColumn(name = "programacion_id")
-	private Programacion programacion_id;
+	private Programacion programacion;
 	
 	@ManyToOne
 	@JoinColumn(name = "instructor_id")
-	private Instructor instructor_id;
+	private Instructor instructor;
 	
 	@ManyToOne
 	@JoinColumn(name = "ubicacion_id")
-	private Ubicacion ubicacion_id;
+	private Ubicacion ubicacion;
 	
-	@OneToMany(mappedBy = "sesion_id", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "sesion", cascade = CascadeType.ALL)
 	@JsonIgnore
 	List<Asistente> asistentes;
 	
-	@OneToMany(mappedBy = "sesion_id", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "sesion", cascade = CascadeType.ALL)
 	@JsonIgnore
 	List<Evidencia> evidencias;
 }

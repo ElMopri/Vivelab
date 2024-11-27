@@ -25,7 +25,7 @@ public class TipoDocumento {
 	@Column(length = 100)
 	private String descripcion;
 	
-	@OneToMany(mappedBy = "tipo_documento_id", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "tipoDocumento", cascade = CascadeType.ALL)
 	@JsonIgnore
 	List<Participante> participantes;
 }

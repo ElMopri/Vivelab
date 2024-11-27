@@ -27,11 +27,16 @@ public class SesionController {
 		return ResponseEntity.ok(sesionService.list());
 	}
 
-	@GetMapping("/{programacionId}")
+	@GetMapping("/{programacion_id}")
 	public ResponseEntity<List<Sesion>> listByProgramacion_id(@PathVariable Integer programacion_id) {
 		return ResponseEntity.ok(sesionService.listByProgramacion_id(programacion_id));
 	}
 
+	@PostMapping("/{sesion_id}/asistencias")
+	public ResponseEntity<Sesion> registrarAsistencia(@PathVariable Integer sesion_id, @RequestBody Integer participante_id) {
+		return ResponseEntity.ok(sesionService.registrarAsistencia(sesion_id, participante_id));
+	}
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<Sesion> get(@PathVariable Integer id) {
 		return ResponseEntity.ok(sesionService.get(id));

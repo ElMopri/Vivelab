@@ -30,17 +30,17 @@ public class Participante {
 	
 	@ManyToOne
 	@JoinColumn(name = "colegio_id")
-	private Colegio colegio_id;
+	private Colegio colegio;
 	
 	@ManyToOne
 	@JoinColumn(name = "tipo_documento_id")
-	private TipoDocumento tipo_documento_id;
+	private TipoDocumento tipoDocumento;
 	
-	@OneToMany(mappedBy = "participante_id", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "participante", cascade = CascadeType.ALL)
 	@JsonIgnore
 	List<Asistente> asistentes;
 	
-	@OneToMany(mappedBy = "participante_id", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "participante", cascade = CascadeType.ALL)
 	@JsonIgnore
 	List<Inscripcion> inscripciones;
 }

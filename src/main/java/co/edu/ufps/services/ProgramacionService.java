@@ -36,16 +36,16 @@ public class ProgramacionService {
 			return null;
 		}
 		Programacion updatedProgramacion = programacionOpt.get();
-		updatedProgramacion.setColegio_id(programacion.getColegio_id());
-		updatedProgramacion.setTaller_id(programacion.getTaller_id());
+		updatedProgramacion.setColegio(programacion.getColegio());
+		updatedProgramacion.setTaller(programacion.getTaller());
 		updatedProgramacion.setFecha_inicio(programacion.getFecha_inicio());
 		updatedProgramacion.setFecha_fin(programacion.getFecha_fin());
 		updatedProgramacion.setCantidad(programacion.getCantidad());
 		updatedProgramacion.setObservacion(programacion.getObservacion());
-		updatedProgramacion.setInstructor_id(programacion.getInstructor_id());
+		updatedProgramacion.setInstructor(programacion.getInstructor());
 		updatedProgramacion.setGrado(programacion.getGrado());
 		updatedProgramacion.setGrupo(programacion.getGrupo());
-		updatedProgramacion.setUbicacion_id(programacion.getUbicacion_id());
+		updatedProgramacion.setUbicacion(programacion.getUbicacion());
 		return programacionRepository.save(updatedProgramacion);
 	}
 

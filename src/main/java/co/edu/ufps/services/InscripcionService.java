@@ -49,8 +49,8 @@ public class InscripcionService {
 			return null;
 		}
 		Inscripcion updatedInscripcion = inscripcionOpt.get();
-		updatedInscripcion.setParticipante_id(inscripcion.getParticipante_id());
-		updatedInscripcion.setProgramacion_id(inscripcion.getProgramacion_id());
+		updatedInscripcion.setParticipante(inscripcion.getParticipante());
+		updatedInscripcion.setProgramacion(inscripcion.getProgramacion());
 		updatedInscripcion.setFecha(inscripcion.getFecha());
 		return inscripcionRepository.save(updatedInscripcion);
 	}

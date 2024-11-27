@@ -25,11 +25,11 @@ public class Ubicacion {
 	@Column(length = 200)
 	private String nombre;
 	
-	@OneToMany(mappedBy = "ubicacion_id", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "ubicacion", cascade = CascadeType.ALL)
 	@JsonIgnore
 	List<Programacion> programaciones = null;
 	
-	@OneToMany(mappedBy = "ubicacion_id", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "ubicacion", cascade = CascadeType.ALL)
 	@JsonIgnore
 	List<Sesion> sesiones = null;
 }
