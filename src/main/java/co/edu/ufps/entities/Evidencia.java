@@ -1,6 +1,8 @@
 package co.edu.ufps.entities;
 
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,10 +21,12 @@ public class Evidencia {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(length = 65535)
-	private String observaciones;
-	
 	@ManyToOne
 	@JoinColumn(name = "sesion_id")
-	private Sesion sesion;
+	private Sesion sesion_id;
+	
+	@Column(columnDefinition = "TEXT")
+	private String observaciones;
+	
+	private LocalDate fecha;
 }

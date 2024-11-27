@@ -29,23 +29,23 @@ public class Sesion {
 	
 	private LocalTime hora;
 	
-	@OneToMany(mappedBy = "sesion", cascade = CascadeType.ALL)
-	@JsonIgnore
-	List<Asistente> asistentes;
-	
-	@OneToMany(mappedBy = "sesion", cascade = CascadeType.ALL)
-	@JsonIgnore
-	List<Evidencia> evidencias;
-	
 	@ManyToOne
 	@JoinColumn(name = "programacion_id")
-	private Programacion programacion;
+	private Programacion programacion_id;
 	
 	@ManyToOne
 	@JoinColumn(name = "instructor_id")
-	private Instructor instructor;
+	private Instructor instructor_id;
 	
 	@ManyToOne
 	@JoinColumn(name = "ubicacion_id")
-	private Ubicacion ubicacion;
+	private Ubicacion ubicacion_id;
+	
+	@OneToMany(mappedBy = "sesion_id", cascade = CascadeType.ALL)
+	@JsonIgnore
+	List<Asistente> asistentes;
+	
+	@OneToMany(mappedBy = "sesion_id", cascade = CascadeType.ALL)
+	@JsonIgnore
+	List<Evidencia> evidencias;
 }

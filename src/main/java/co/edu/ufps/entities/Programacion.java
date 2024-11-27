@@ -55,7 +55,11 @@ public class Programacion {
 	@JoinColumn(name = "ubicacion_id")
 	private Ubicacion ubicacion_id;
 	
-	@OneToMany(mappedBy = "programacion", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "programacion_id", cascade = CascadeType.ALL)
 	@JsonIgnore
 	List<Sesion> sesiones;
+	
+	@OneToMany(mappedBy = "programacion_id", cascade = CascadeType.ALL)
+	@JsonIgnore
+	List<Inscripcion> inscripciones;
 }

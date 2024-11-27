@@ -1,5 +1,6 @@
 package co.edu.ufps.entities;
 
+import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,17 +14,19 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "asistente", uniqueConstraints = {@UniqueConstraint(columnNames = {"sesion_id", "participante_id"})})
-public class Asistente {
+@Table(name = "inscripcion", uniqueConstraints = {@UniqueConstraint(columnNames = {"participante_id", "programacion_id"})})
+public class Inscripcion {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
 	@ManyToOne
-	@JoinColumn(name = "sesion_id")
-	private Sesion sesion_id;
-	
-	@ManyToOne
 	@JoinColumn(name = "participante_id")
 	private Participante participante_id;
+	
+	@ManyToOne
+	@JoinColumn(name = "programacion_id")
+	private Programacion programacion_id;
+	
+	private LocalDate fecha;
 }

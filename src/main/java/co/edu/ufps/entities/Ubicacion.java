@@ -29,7 +29,7 @@ public class Ubicacion {
 	@JsonIgnore
 	List<Programacion> programaciones = null;
 	
-	@OneToMany(mappedBy = "ubicacion", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "ubicacion_id", cascade = CascadeType.ALL)
 	@JsonIgnore
-	List<Sesion> sesiones;
+	List<Sesion> sesiones = null;
 }
