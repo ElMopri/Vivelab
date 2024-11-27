@@ -39,8 +39,8 @@ public class UbicacionController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Ubicacion> update(@PathVariable Integer id, @RequestBody Ubicacion ubicacionDetails) {
-		Ubicacion updatedUbicacion = ubicacionService.update(id, ubicacionDetails);
+	public ResponseEntity<Ubicacion> update(@PathVariable Integer id, @RequestBody Ubicacion ubicacion) {
+		Ubicacion updatedUbicacion = ubicacionService.update(id, ubicacion);
 		return ResponseEntity.ok(updatedUbicacion);
 	}
 	

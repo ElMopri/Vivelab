@@ -30,15 +30,15 @@ public class InstructorService {
 		return instructorRepository.save(instructor);
 	}
 
-	public Instructor update(Integer id, Instructor instructorDetails) {
+	public Instructor update(Integer id, Instructor instructor) {
 		Optional<Instructor> instructorOpt = instructorRepository.findById(id);
 		if (!instructorOpt.isPresent()) {
 			return null;
 		}
-		Instructor instructor = instructorOpt.get();
-		instructor.setNombre(instructorDetails.getNombre());
-		instructor.setDocumento(instructorDetails.getDocumento());
-		return instructorRepository.save(instructor);
+		Instructor updatedInstructor = instructorOpt.get();
+		updatedInstructor.setNombre(instructor.getNombre());
+		updatedInstructor.setDocumento(instructor.getDocumento());
+		return instructorRepository.save(updatedInstructor);
 	}
 
 	public Instructor delete(Integer id) {

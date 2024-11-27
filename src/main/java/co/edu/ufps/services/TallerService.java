@@ -30,15 +30,15 @@ public class TallerService {
 		return tallerRepository.save(taller);
 	}
 
-	public Taller update(Integer id, Taller tallerDetails) {
+	public Taller update(Integer id, Taller taller) {
 		Optional<Taller> tallerOpt = tallerRepository.findById(id);
 		if (!tallerOpt.isPresent()) {
 			return null;
 		}
-		Taller taller = tallerOpt.get();
-		taller.setNombre(tallerDetails.getNombre());
-		taller.setDescripcion(tallerDetails.getDescripcion());
-		return tallerRepository.save(taller);
+		Taller updatedTaller = tallerOpt.get();
+		updatedTaller.setNombre(taller.getNombre());
+		updatedTaller.setDescripcion(taller.getDescripcion());
+		return tallerRepository.save(updatedTaller);
 	}
 
 	public Taller delete(Integer id) {

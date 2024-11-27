@@ -30,14 +30,14 @@ public class UbicacionService {
 		return ubicacionRepository.save(ubicacion);
 	}
 
-	public Ubicacion update(Integer id, Ubicacion ubicacionDetails) {
+	public Ubicacion update(Integer id, Ubicacion ubicacion) {
 		Optional<Ubicacion> ubicacionOpt = ubicacionRepository.findById(id);
 		if (!ubicacionOpt.isPresent()) {
 			return null;
 		}
-		Ubicacion ubicacion = ubicacionOpt.get();
-		ubicacion.setNombre(ubicacionDetails.getNombre());
-		return ubicacionRepository.save(ubicacion);
+		Ubicacion updatedUbicacion = ubicacionOpt.get();
+		updatedUbicacion.setNombre(ubicacion.getNombre());
+		return ubicacionRepository.save(updatedUbicacion);
 	}
 
 	public Ubicacion delete(Integer id) {

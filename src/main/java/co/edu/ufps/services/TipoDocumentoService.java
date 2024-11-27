@@ -30,14 +30,14 @@ public class TipoDocumentoService {
 		return tipoDocumentoRepository.save(tipoDocumento);
 	}
 
-	public TipoDocumento update(Integer id, TipoDocumento tipoDocumentoDetails) {
+	public TipoDocumento update(Integer id, TipoDocumento tipoDocumento) {
 		Optional<TipoDocumento> tipoDocumentoOpt = tipoDocumentoRepository.findById(id);
 		if (!tipoDocumentoOpt.isPresent()) {
 			return null;
 		}
-		TipoDocumento tipoDocumento = tipoDocumentoOpt.get();
-		tipoDocumento.setDescripcion(tipoDocumentoDetails.getDescripcion());
-		return tipoDocumentoRepository.save(tipoDocumento);
+		TipoDocumento updatedTipoDocumento = tipoDocumentoOpt.get();
+		updatedTipoDocumento.setDescripcion(tipoDocumento.getDescripcion());
+		return tipoDocumentoRepository.save(updatedTipoDocumento);
 	}
 
 	public TipoDocumento delete(Integer id) {

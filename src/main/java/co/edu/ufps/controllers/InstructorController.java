@@ -39,8 +39,8 @@ public class InstructorController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Instructor> update(@PathVariable Integer id, @RequestBody Instructor instructorDetails) {
-		Instructor updatedInstructor = instructorService.update(id, instructorDetails);
+	public ResponseEntity<Instructor> update(@PathVariable Integer id, @RequestBody Instructor instructor) {
+		Instructor updatedInstructor = instructorService.update(id, instructor);
 		return ResponseEntity.ok(updatedInstructor);
 	}
 	

@@ -39,8 +39,8 @@ public class TallerController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Taller> update(@PathVariable Integer id, @RequestBody Taller tallerDetails) {
-		Taller updatedTaller = tallerService.update(id, tallerDetails);
+	public ResponseEntity<Taller> update(@PathVariable Integer id, @RequestBody Taller taller) {
+		Taller updatedTaller = tallerService.update(id, taller);
 		return ResponseEntity.ok(updatedTaller);
 	}
 	

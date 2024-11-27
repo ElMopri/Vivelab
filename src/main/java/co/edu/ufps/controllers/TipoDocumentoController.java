@@ -39,8 +39,8 @@ public class TipoDocumentoController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<TipoDocumento> update(@PathVariable Integer id, @RequestBody TipoDocumento tipoDocumentoDetails) {
-		TipoDocumento updatedTipoDocumento = tipoDocumentoService.update(id, tipoDocumentoDetails);
+	public ResponseEntity<TipoDocumento> update(@PathVariable Integer id, @RequestBody TipoDocumento tipoDocumento) {
+		TipoDocumento updatedTipoDocumento = tipoDocumentoService.update(id, tipoDocumento);
 		return ResponseEntity.ok(updatedTipoDocumento);
 	}
 	
