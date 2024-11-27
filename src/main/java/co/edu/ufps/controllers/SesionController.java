@@ -28,7 +28,7 @@ public class SesionController {
 		return ResponseEntity.ok(sesionService.list());
 	}
 
-	@GetMapping("/{programacionId}")
+	@GetMapping("/programacion/{programacionId}")
 	public ResponseEntity<List<Sesion>> listByProgramacionId(@PathVariable Integer programacionId) {
 		return ResponseEntity.ok(sesionService.listByProgramacionId(programacionId));
 	}
