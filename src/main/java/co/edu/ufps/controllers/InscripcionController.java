@@ -27,9 +27,9 @@ public class InscripcionController {
 		return ResponseEntity.ok(inscripcionService.list());
 	}
 	
-    @GetMapping("/{programacion_id}")
-    public ResponseEntity<List<Inscripcion>> listByProgramacion_id(@PathVariable Integer programacion_id) {
-        return ResponseEntity.ok(inscripcionService.listByProgramacion_id(programacion_id));
+    @GetMapping("/programaciones/{programacionId}")
+    public ResponseEntity<List<Inscripcion>> listByProgramacionId(@PathVariable Integer programacionId) {
+        return ResponseEntity.ok(inscripcionService.listByProgramacionId(programacionId));
     }
 	
 	@GetMapping("/{id}")

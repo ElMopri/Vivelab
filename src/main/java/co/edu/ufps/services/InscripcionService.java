@@ -23,8 +23,8 @@ public class InscripcionService {
 		return inscripcionRepository.findAll();
 	}
 	
-	public List<Inscripcion> listByProgramacion_id(Integer programacion_id) {
-		Optional<Programacion> programacionOpt = programacionRepository.findById(programacion_id);
+	public List<Inscripcion> listByProgramacionId(Integer programacionId) {
+		Optional<Programacion> programacionOpt = programacionRepository.findById(programacionId);
 		if (programacionOpt.isPresent()) {
 			return programacionOpt.get().getInscripciones();
 		}

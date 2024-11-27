@@ -27,7 +27,7 @@ public class EvidenciaController {
 		return ResponseEntity.ok(evidenciaService.list());
 	}
 	
-		@GetMapping("/{sesionId}")
+		@GetMapping("/sesiones/{sesionId}")
 	public ResponseEntity<List<Evidencia>> listBySesionId(@PathVariable Integer sesionId) {
 		return ResponseEntity.ok(evidenciaService.listBySesionId(sesionId));
 	}
