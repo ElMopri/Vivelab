@@ -7,6 +7,8 @@ import co.edu.ufps.entities.Participante;
 import co.edu.ufps.entities.Sesion;
 
 public interface AsistenteRepository extends JpaRepository<Asistente, Integer> {
-	public Asistente findBySesionAndParticipante(Sesion sesionId, Participante participanteId);
-	boolean existsBySesionAndParticipante(Sesion sesionId, Participante participanteId);
+	public Asistente findBySesionAndParticipante(Sesion sesion, Participante participante);
+	public boolean existsBySesionAndParticipante(Sesion sesion, Participante participante);
+	public boolean existsBySesion(Sesion sesion);
+	public boolean existsByParticipante(Participante participante);
 }

@@ -7,12 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.edu.ufps.entities.Taller;
+import co.edu.ufps.repositories.ProgramacionRepository;
 import co.edu.ufps.repositories.TallerRepository;
 
 @Service
 public class TallerService {
 	@Autowired
 	private TallerRepository tallerRepository;
+	
+	@Autowired
+	private ProgramacionRepository programacionRepository;
 
 	public List<Taller> list() {
 		return tallerRepository.findAll();
@@ -42,12 +46,15 @@ public class TallerService {
 	}
 
 	public Taller delete(Integer id) {
-		Optional<Taller> tallerOpt = tallerRepository.findById(id);
-		if (tallerOpt.isPresent()) {
-			Taller taller = tallerOpt.get();
-			tallerRepository.delete(taller);
-			return taller;
-		}
-		return null;
+	    Optional<Taller> tallerOpt = tallerRepository.findById(id);
+	    if (!tallerOpt.isPresent()) {
+	        throw new IllegalArgumentException("El taller con id " + id + " no existe.");
+	    }
+	    Taller taller = tallerOpt.get();
+	    if (programacionRepository.existsByTaller(taller)) {
+	        throw new IllegalStateException("No se puede eliminar el taller porque tiene programaciones relacionadas.");
+	    }
+	    tallerRepository.delete(taller);
+	    return taller;
 	}
 }

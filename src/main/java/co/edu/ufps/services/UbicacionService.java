@@ -7,12 +7,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.edu.ufps.entities.Ubicacion;
+import co.edu.ufps.repositories.ProgramacionRepository;
+import co.edu.ufps.repositories.SesionRepository;
 import co.edu.ufps.repositories.UbicacionRepository;
 
 @Service
 public class UbicacionService {
 	@Autowired
 	private UbicacionRepository ubicacionRepository;
+	
+	@Autowired
+	private ProgramacionRepository programacionRepository;
+	
+	@Autowired
+	private SesionRepository sesionRepository;
 
 	public List<Ubicacion> list() {
 		return ubicacionRepository.findAll();
@@ -41,12 +49,18 @@ public class UbicacionService {
 	}
 
 	public Ubicacion delete(Integer id) {
-		Optional<Ubicacion> ubicacionOpt = ubicacionRepository.findById(id);
-		if (ubicacionOpt.isPresent()) {
-			Ubicacion ubicacion = ubicacionOpt.get();
-			ubicacionRepository.delete(ubicacion);
-			return ubicacion;
-		}
-		return null;
+	    Optional<Ubicacion> ubicacionOpt = ubicacionRepository.findById(id);
+	    if (!ubicacionOpt.isPresent()) {
+	        throw new IllegalArgumentException("La ubicacion con id " + id + " no existe.");
+	    }
+	    Ubicacion ubicacion = ubicacionOpt.get();
+	    if (programacionRepository.existsByUbicacion(ubicacion)) {
+	        throw new IllegalStateException("No se puede eliminar la ubicacion porque tiene programaciones relacionadas.");
+	    }
+	    if (sesionRepository.existsByUbicacion(ubicacion)) {
+	        throw new IllegalStateException("No se puede eliminar la ubicacion porque tiene sesiones relacionadas.");
+	    }
+	    ubicacionRepository.delete(ubicacion);
+	    return ubicacion;
 	}
 }

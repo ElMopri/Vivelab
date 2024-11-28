@@ -7,12 +7,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.edu.ufps.entities.Participante;
+import co.edu.ufps.repositories.AsistenteRepository;
+import co.edu.ufps.repositories.InscripcionRepository;
 import co.edu.ufps.repositories.ParticipanteRepository;
 
 @Service
 public class ParticipanteService {
 	@Autowired
 	private ParticipanteRepository participanteRepository;
+	
+	@Autowired
+	private AsistenteRepository asistenteRepository;
+	
+	@Autowired
+	private InscripcionRepository inscripcionRepository;
 
 	public List<Participante> list() {
 		return participanteRepository.findAll();
@@ -43,12 +51,18 @@ public class ParticipanteService {
 	}
 
 	public Participante delete(Integer id) {
-		Optional<Participante> participanteOpt = participanteRepository.findById(id);
-		if (participanteOpt.isPresent()) {
-			Participante participante = participanteOpt.get();
-			participanteRepository.delete(participante);
-			return participante;
-		}
-		return null;
+	    Optional<Participante> participanteOpt = participanteRepository.findById(id);
+	    if (!participanteOpt.isPresent()) {
+	        throw new IllegalArgumentException("El participante con id " + id + " no existe.");
+	    }
+	    Participante participante = participanteOpt.get();
+	    if (asistenteRepository.existsByParticipante(participante)) {
+	        throw new IllegalStateException("No se puede eliminar el participante porque tiene asistentes relacionados.");
+	    }
+	    if (inscripcionRepository.existsByParticipante(participante)) {
+	        throw new IllegalStateException("No se puede eliminar el participante porque tiene inscripciones relacionadas.");
+	    }
+	    participanteRepository.delete(participante);
+	    return participante;
 	}
 }

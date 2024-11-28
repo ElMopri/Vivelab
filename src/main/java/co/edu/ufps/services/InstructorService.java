@@ -8,11 +8,19 @@ import org.springframework.stereotype.Service;
 
 import co.edu.ufps.entities.Instructor;
 import co.edu.ufps.repositories.InstructorRepository;
+import co.edu.ufps.repositories.ProgramacionRepository;
+import co.edu.ufps.repositories.SesionRepository;
 
 @Service
 public class InstructorService {
 	@Autowired
 	private InstructorRepository instructorRepository;
+	
+	@Autowired
+	private ProgramacionRepository programacionRepository;
+	
+	@Autowired
+	private SesionRepository sesionRepository;
 
 	public List<Instructor> list() {
 		return instructorRepository.findAll();
@@ -42,12 +50,18 @@ public class InstructorService {
 	}
 
 	public Instructor delete(Integer id) {
-		Optional<Instructor> instructorOpt = instructorRepository.findById(id);
-		if (instructorOpt.isPresent()) {
-			Instructor instructor = instructorOpt.get();
-			instructorRepository.delete(instructor);
-			return instructor;
-		}
-		return null;
+	    Optional<Instructor> instructorOpt = instructorRepository.findById(id);
+	    if (!instructorOpt.isPresent()) {
+	        throw new IllegalArgumentException("El instructor con id " + id + " no existe.");
+	    }
+	    Instructor instructor = instructorOpt.get();
+	    if (programacionRepository.existsByInstructor(instructor)) {
+	        throw new IllegalStateException("No se puede eliminar el instructor porque tiene programaciones relacionadas.");
+	    }
+	    if (sesionRepository.existsByInstructor(instructor)) {
+	        throw new IllegalStateException("No se puede eliminar el instructor porque tiene sesiones relacionadas.");
+	    }
+	    instructorRepository.delete(instructor);
+	    return instructor;
 	}
 }

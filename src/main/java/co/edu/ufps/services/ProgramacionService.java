@@ -7,12 +7,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.edu.ufps.entities.Programacion;
+import co.edu.ufps.repositories.InscripcionRepository;
 import co.edu.ufps.repositories.ProgramacionRepository;
+import co.edu.ufps.repositories.SesionRepository;
 
 @Service
 public class ProgramacionService {
 	@Autowired
 	private ProgramacionRepository programacionRepository;
+	
+	@Autowired
+	private InscripcionRepository inscripcionRepository;
+	
+	@Autowired
+	private SesionRepository sesionRepository;
 
 	public List<Programacion> list() {
 		return programacionRepository.findAll();
@@ -50,12 +58,18 @@ public class ProgramacionService {
 	}
 
 	public Programacion delete(Integer id) {
-		Optional<Programacion> programacionOpt = programacionRepository.findById(id);
-		if (programacionOpt.isPresent()) {
-			Programacion programacion = programacionOpt.get();
-			programacionRepository.delete(programacion);
-			return programacion;
-		}
-		return null;
+	    Optional<Programacion> programacionOpt = programacionRepository.findById(id);
+	    if (!programacionOpt.isPresent()) {
+	        throw new IllegalArgumentException("La programacion con id " + id + " no existe.");
+	    }
+	    Programacion programacion = programacionOpt.get();
+	    if (inscripcionRepository.existsByProgramacion(programacion)) {
+	        throw new IllegalStateException("No se puede eliminar la programacion porque tiene inscripciones relacionadas.");
+	    }
+	    if (sesionRepository.existsByProgramacion(programacion)) {
+	        throw new IllegalStateException("No se puede eliminar la programacion porque tiene sesiones relacionadas.");
+	    }
+	    programacionRepository.delete(programacion);
+	    return programacion;
 	}
 }
