@@ -13,4 +13,5 @@ public interface InscripcionRepository extends JpaRepository<Inscripcion, Intege
 	public boolean existsByParticipante(Participante participante);
 	public boolean existsByParticipanteAndProgramacion(Participante participante, Programacion programacion);
 	public List<Inscripcion> findByProgramacion(Programacion programacion);
+	public List<Inscripcion> findAllByParticipante_NombreContainingIgnoreCase(String nombre);
 }

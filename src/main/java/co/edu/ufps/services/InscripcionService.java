@@ -32,6 +32,10 @@ public class InscripcionService {
             throw new RuntimeException("Programación no encontrada con ID: " + programacionId);
         }
     }
+    
+    public List<Inscripcion> listByParticipanteNombre(String participanteNombre) {
+    	return inscripcionRepository.findAllByParticipante_NombreContainingIgnoreCase(participanteNombre);
+    }
 
     public Inscripcion get(Integer id) {
         return inscripcionRepository.findById(id)

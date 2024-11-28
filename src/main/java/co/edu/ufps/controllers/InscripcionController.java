@@ -22,44 +22,49 @@ import co.edu.ufps.services.InscripcionService;
 @RequestMapping("/api/inscripciones")
 public class InscripcionController {
 
-    @Autowired
-    private InscripcionService inscripcionService;
+	@Autowired
+	private InscripcionService inscripcionService;
 
-    @GetMapping
+	@GetMapping
     public ResponseEntity<List<Inscripcion>> list() {
         return ResponseEntity.ok(inscripcionService.list());
-    }
+	}
 
-    @GetMapping("/programaciones/{programacionId}")
-    public ResponseEntity<List<Inscripcion>> listByProgramacionId(@PathVariable Integer programacionId) {
-        return ResponseEntity.ok(inscripcionService.listByProgramacionId(programacionId));
-    }
+	@GetMapping("/listByParticipanteNombre/{participanteNombre}")
+	public ResponseEntity<List<Inscripcion>> listByParticipanteNombre(@PathVariable String participanteNombre) {
+		return ResponseEntity.ok(inscripcionService.listByParticipanteNombre(participanteNombre));
+	}
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Inscripcion> get(@PathVariable Integer id) {
-        return ResponseEntity.ok(inscripcionService.get(id));
-    }
+	@GetMapping("/programaciones/{programacionId}")
+	public ResponseEntity<List<Inscripcion>> listByProgramacionId(@PathVariable Integer programacionId) {
+		return ResponseEntity.ok(inscripcionService.listByProgramacionId(programacionId));
+	}
 
-    @PostMapping()
-    public ResponseEntity<Inscripcion> create(@RequestBody Inscripcion inscripcion) {
-        Inscripcion newInscripcion = inscripcionService.create(inscripcion);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newInscripcion);
-    }
+	@GetMapping("/{id}")
+	public ResponseEntity<Inscripcion> get(@PathVariable Integer id) {
+		return ResponseEntity.ok(inscripcionService.get(id));
+	}
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Inscripcion> update(@PathVariable Integer id, @RequestBody Inscripcion inscripcion) {
-        Inscripcion updatedInscripcion = inscripcionService.update(id, inscripcion);
-        return ResponseEntity.ok(updatedInscripcion);
-    }
+	@PostMapping()
+	public ResponseEntity<Inscripcion> create(@RequestBody Inscripcion inscripcion) {
+		Inscripcion newInscripcion = inscripcionService.create(inscripcion);
+		return ResponseEntity.status(HttpStatus.CREATED).body(newInscripcion);
+	}
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Inscripcion> delete(@PathVariable Integer id) {
-        Inscripcion deletedInscripcion = inscripcionService.delete(id);
-        return ResponseEntity.ok(deletedInscripcion);
-    }
+	@PutMapping("/{id}")
+	public ResponseEntity<Inscripcion> update(@PathVariable Integer id, @RequestBody Inscripcion inscripcion) {
+		Inscripcion updatedInscripcion = inscripcionService.update(id, inscripcion);
+		return ResponseEntity.ok(updatedInscripcion);
+	}
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-    }
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Inscripcion> delete(@PathVariable Integer id) {
+		Inscripcion deletedInscripcion = inscripcionService.delete(id);
+		return ResponseEntity.ok(deletedInscripcion);
+	}
+
+	@ExceptionHandler(IllegalArgumentException.class)
+	public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException ex) {
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+	}
 }
