@@ -11,6 +11,7 @@ import co.edu.ufps.entities.Participante;
 import co.edu.ufps.entities.Programacion;
 import co.edu.ufps.entities.Sesion;
 import co.edu.ufps.repositories.AsistenteRepository;
+import co.edu.ufps.repositories.EvidenciaRepository;
 import co.edu.ufps.repositories.ParticipanteRepository;
 import co.edu.ufps.repositories.ProgramacionRepository;
 import co.edu.ufps.repositories.SesionRepository;
@@ -28,6 +29,9 @@ public class SesionService {
 
 	@Autowired
 	private ParticipanteRepository participanteRepository;
+	
+	@Autowired
+	private EvidenciaRepository evidenciaRepository;
 	
 	public List<Sesion> list() {
 		return sesionRepository.findAll();
@@ -81,12 +85,18 @@ public class SesionService {
 	}
 
 	public Sesion delete(Integer id) {
-		Optional<Sesion> sesionOpt = sesionRepository.findById(id);
-		if (sesionOpt.isPresent()) {
-			Sesion sesion = sesionOpt.get();
-			sesionRepository.delete(sesion);
-			return sesion;
-		}
-		return null;
+	    Optional<Sesion> sesionOpt = sesionRepository.findById(id);
+	    if (!sesionOpt.isPresent()) {
+	        throw new IllegalArgumentException("La sesión con id " + id + " no existe.");
+	    }
+	    Sesion sesion = sesionOpt.get();
+	    if (asistenteRepository.existsBySesion(sesion)) {
+	        throw new IllegalStateException("No se puede eliminar la sesión porque tiene asistentes relacionados.");
+	    }
+	    if (evidenciaRepository.existsBySesion(sesion)) {
+	        throw new IllegalStateException("No se puede eliminar la sesión porque tiene evidencias relacionadas.");
+	    }
+	    sesionRepository.delete(sesion);
+	    return sesion;
 	}
 }

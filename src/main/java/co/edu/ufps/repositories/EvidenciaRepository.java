@@ -9,5 +9,5 @@ import co.edu.ufps.entities.Sesion;
 
 public interface EvidenciaRepository extends JpaRepository<Evidencia, Integer>{
 	public List<Evidencia> findAllBySesion(Sesion sesion);
-	public boolean existsBySesion (Sesion sesion);
+	public boolean existsBySesion(Sesion sesion);
 }

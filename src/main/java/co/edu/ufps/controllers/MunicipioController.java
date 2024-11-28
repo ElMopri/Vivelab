@@ -3,6 +3,7 @@ package co.edu.ufps.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,8 +46,14 @@ public class MunicipioController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Municipio> delete(@PathVariable Integer id) {
-		Municipio deletedMunicipio = municipioService.delete(id);
-		return ResponseEntity.ok(deletedMunicipio);
+	public ResponseEntity<?> delete(@PathVariable Integer id) {
+	    try {
+	        Municipio deletedMunicipio = municipioService.delete(id);
+	        return ResponseEntity.ok(deletedMunicipio);
+	    } catch (IllegalArgumentException e) {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+	    } catch (IllegalStateException e) {
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+	    }
 	}
 }

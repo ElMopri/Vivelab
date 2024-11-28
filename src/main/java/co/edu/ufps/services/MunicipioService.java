@@ -7,12 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.edu.ufps.entities.Municipio;
+import co.edu.ufps.repositories.ColegioRepository;
 import co.edu.ufps.repositories.MunicipioRepository;
 
 @Service
 public class MunicipioService {
 	@Autowired
 	private MunicipioRepository municipioRepository;
+	
+	@Autowired
+	private ColegioRepository colegioRepository;
 
 	public List<Municipio> list() {
 		return municipioRepository.findAll();
@@ -42,12 +46,15 @@ public class MunicipioService {
 	}
 
 	public Municipio delete(Integer id) {
-		Optional<Municipio> municipioOpt = municipioRepository.findById(id);
-		if (municipioOpt.isPresent()) {
-			Municipio municipio = municipioOpt.get();
-			municipioRepository.delete(municipio);
-			return municipio;
-		}
-		return null;
+	    Optional<Municipio> municipioOpt = municipioRepository.findById(id);
+	    if (!municipioOpt.isPresent()) {
+	        throw new IllegalArgumentException("El municipio con id " + id + " no existe.");
+	    }
+	    Municipio municipio = municipioOpt.get();
+	    if (colegioRepository.existsByMunicipio(municipio)) {
+	        throw new IllegalStateException("No se puede eliminar el municipio porque tiene colegios relacionados.");
+	    }
+	    municipioRepository.delete(municipio);
+	    return municipio;
 	}
 }

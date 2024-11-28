@@ -8,11 +8,19 @@ import org.springframework.stereotype.Service;
 
 import co.edu.ufps.entities.Colegio;
 import co.edu.ufps.repositories.ColegioRepository;
+import co.edu.ufps.repositories.ParticipanteRepository;
+import co.edu.ufps.repositories.ProgramacionRepository;
 
 @Service
 public class ColegioService {
 	@Autowired
 	private ColegioRepository colegioRepository;
+	
+	@Autowired
+	private ParticipanteRepository participanteRepository;
+	
+	@Autowired
+	private ProgramacionRepository programacionRepository;
 
 	public List<Colegio> list() {
 		return colegioRepository.findAll();
@@ -41,14 +49,20 @@ public class ColegioService {
 		updatedColegio.setDane(colegio.getDane());
 		return colegioRepository.save(updatedColegio);
 	}
-
-	public Colegio delete(Integer id) {
-		Optional<Colegio> colegioOpt = colegioRepository.findById(id);
-		if (colegioOpt.isPresent()) {
-			Colegio colegio = colegioOpt.get();
-			colegioRepository.delete(colegio);
-			return colegio;
-		}
-		return null;
+	
+		public Colegio delete(Integer id) {
+	    Optional<Colegio> colegioOpt = colegioRepository.findById(id);
+	    if (!colegioOpt.isPresent()) {
+	        throw new IllegalArgumentException("El colegio con id " + id + " no existe.");
+	    }
+	    Colegio colegio = colegioOpt.get();
+	    if (participanteRepository.existsByColegio(colegio)) {
+	        throw new IllegalStateException("No se puede eliminar el colegio porque tiene participantes relacionados.");
+	    }
+	    if (programacionRepository.existsByColegio(colegio)) {
+	        throw new IllegalStateException("No se puede eliminar el colegio porque tiene programaciones relacionadas.");
+	    }
+	    colegioRepository.delete(colegio);
+	    return colegio;
 	}
 }

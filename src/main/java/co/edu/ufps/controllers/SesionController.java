@@ -3,6 +3,7 @@ package co.edu.ufps.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -54,10 +55,16 @@ public class SesionController {
 		Sesion updatedSesion = sesionService.update(id, sesion);
 		return ResponseEntity.ok(updatedSesion);
 	}
-
+	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Sesion> delete(@PathVariable Integer id) {
-		Sesion deletedSesion = sesionService.delete(id);
-		return ResponseEntity.ok(deletedSesion);
+	public ResponseEntity<?> delete(@PathVariable Integer id) {
+	    try {
+	        Sesion deletedSesion = sesionService.delete(id);
+	        return ResponseEntity.ok(deletedSesion);
+	    } catch (IllegalArgumentException e) {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+	    } catch (IllegalStateException e) {
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+	    }
 	}
 }
