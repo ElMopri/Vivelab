@@ -88,7 +88,6 @@ public class SesionService {
 		if (!sesionOpt.isPresent()) {
 			throw new IllegalArgumentException("No existe una sesión con id " + id);
 		}
-
 		Sesion updatedSesion = sesionOpt.get();
 		updatedSesion.setFecha(sesion.getFecha());
 		updatedSesion.setHora(sesion.getHora());

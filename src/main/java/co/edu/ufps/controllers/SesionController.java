@@ -56,7 +56,18 @@ public class SesionController {
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 	    }
 	}
-
+	
+	@GetMapping("/{id}/tallerNombre")
+	public ResponseEntity<?> getTallerNombre(@PathVariable Integer id) {
+	    try {
+	        return ResponseEntity.ok(sesionService.get(id).getProgramacion().getTaller().getNombre());
+	    } catch (IllegalArgumentException e) {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+	    } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+	}
+	
 	@PostMapping()
 	public ResponseEntity<Sesion> create(@RequestBody Sesion sesion) {
 		Sesion newSesion = sesionService.create(sesion);
