@@ -50,7 +50,7 @@ public class ColegioService {
 		return colegioRepository.save(updatedColegio);
 	}
 	
-		public Colegio delete(Integer id) {
+	public Colegio delete(Integer id) {
 	    Optional<Colegio> colegioOpt = colegioRepository.findById(id);
 	    if (!colegioOpt.isPresent()) {
 	        throw new IllegalArgumentException("El colegio con id " + id + " no existe.");
@@ -65,4 +65,5 @@ public class ColegioService {
 	    colegioRepository.delete(colegio);
 	    return colegio;
 	}
+
 }

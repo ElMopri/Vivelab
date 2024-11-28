@@ -22,29 +22,29 @@ import co.edu.ufps.services.ColegioService;
 public class ColegioController {
 	@Autowired
 	private ColegioService colegioService;
-	
+
 	@GetMapping
 	public ResponseEntity<List<Colegio>> list() {
 		return ResponseEntity.ok(colegioService.list());
 	}
-	
+
 	@GetMapping("/{id}")
 	public ResponseEntity<Colegio> get(@PathVariable Integer id) {
 		return ResponseEntity.ok(colegioService.get(id));
 	}
-	
+
 	@PostMapping()
 	public ResponseEntity<Colegio> create(@RequestBody Colegio colegio) {
 		Colegio newColegio = colegioService.create(colegio);
 		return ResponseEntity.ok(newColegio);
 	}
-	
+
 	@PutMapping("/{id}")
 	public ResponseEntity<Colegio> update(@PathVariable Integer id, @RequestBody Colegio colegio) {
 		Colegio updatedColegio = colegioService.update(id, colegio);
 		return ResponseEntity.ok(updatedColegio);
 	}
-	
+
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable Integer id) {
 	    try {

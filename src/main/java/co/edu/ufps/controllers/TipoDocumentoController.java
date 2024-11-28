@@ -1,7 +1,5 @@
 package co.edu.ufps.controllers;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,40 +18,66 @@ import co.edu.ufps.services.TipoDocumentoService;
 @RestController
 @RequestMapping("/api/tipo_documentos")
 public class TipoDocumentoController {
-	@Autowired
-	private TipoDocumentoService tipoDocumentoService;
-	
-	@GetMapping
-	public ResponseEntity<List<TipoDocumento>> list() {
-		return ResponseEntity.ok(tipoDocumentoService.list());
-	}
-	
-	@GetMapping("/{id}")
-	public ResponseEntity<TipoDocumento> get(@PathVariable Integer id) {
-		return ResponseEntity.ok(tipoDocumentoService.get(id));
-	}
-	
-	@PostMapping()
-	public ResponseEntity<TipoDocumento> create(@RequestBody TipoDocumento tipoDocumento) {
-		TipoDocumento newTipoDocumento = tipoDocumentoService.create(tipoDocumento);
-		return ResponseEntity.ok(newTipoDocumento);
-	}
-	
-	@PutMapping("/{id}")
-	public ResponseEntity<TipoDocumento> update(@PathVariable Integer id, @RequestBody TipoDocumento tipoDocumento) {
-		TipoDocumento updatedTipoDocumento = tipoDocumentoService.update(id, tipoDocumento);
-		return ResponseEntity.ok(updatedTipoDocumento);
-	}
-	
-	@DeleteMapping("/{id}")
-	public ResponseEntity<?> delete(@PathVariable Integer id) {
-	    try {
-	        TipoDocumento deletedTipoDocumento = tipoDocumentoService.delete(id);
-	        return ResponseEntity.ok(deletedTipoDocumento);
-	    } catch (IllegalArgumentException e) {
-	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-	    } catch (IllegalStateException e) {
-	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-	    }
-	}
+    @Autowired
+    private TipoDocumentoService tipoDocumentoService;
+    
+    @GetMapping
+    public ResponseEntity<?> list() {
+        try {
+            return ResponseEntity.ok(tipoDocumentoService.list());
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<?> get(@PathVariable Integer id) {
+        try {
+            TipoDocumento tipoDocumento = tipoDocumentoService.get(id);
+            return ResponseEntity.ok(tipoDocumento);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+    
+    @PostMapping()
+    public ResponseEntity<?> create(@RequestBody TipoDocumento tipoDocumento) {
+        try {
+            TipoDocumento newTipoDocumento = tipoDocumentoService.create(tipoDocumento);
+            return ResponseEntity.status(HttpStatus.CREATED).body(newTipoDocumento);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+    
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody TipoDocumento tipoDocumento) {
+        try {
+            return ResponseEntity.ok(tipoDocumentoService.update(id, tipoDocumento));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+    
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Integer id) {
+        try {
+            TipoDocumento deletedTipoDocumento = tipoDocumentoService.delete(id);
+            return ResponseEntity.ok(deletedTipoDocumento);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
 }
