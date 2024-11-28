@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import co.edu.ufps.entities.Asistente;
 import co.edu.ufps.entities.Sesion;
 import co.edu.ufps.services.SesionService;
 
@@ -30,18 +29,32 @@ public class SesionController {
 	}
 
 	@GetMapping("/programaciones/{programacionId}")
-	public ResponseEntity<List<Sesion>> listByProgramacionId(@PathVariable Integer programacionId) {
-		return ResponseEntity.ok(sesionService.listByProgramacionId(programacionId));
+	public ResponseEntity<?> listByProgramacionId(@PathVariable Integer programacionId) {
+	    try {
+	        return ResponseEntity.ok(sesionService.listByProgramacionId(programacionId));
+	    } catch (IllegalArgumentException e) {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+	    }
 	}
 
 	@PostMapping("/{sesionId}/asistencias")
-	public ResponseEntity<Asistente> registrarAsistencia(@PathVariable Integer sesionId, @RequestBody Integer participanteId) {
-		return ResponseEntity.ok(sesionService.registrarAsistencia(sesionId, participanteId));
+	public ResponseEntity<?> registrarAsistencia(@PathVariable Integer sesionId, @RequestBody Integer participanteId) {
+	    try {
+	        return ResponseEntity.ok(sesionService.registrarAsistencia(sesionId, participanteId));
+	    } catch (IllegalArgumentException e) {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+	    } catch (IllegalStateException e) {
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+	    }
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Sesion> get(@PathVariable Integer id) {
-		return ResponseEntity.ok(sesionService.get(id));
+	public ResponseEntity<?> get(@PathVariable Integer id) {
+	    try {
+	        return ResponseEntity.ok(sesionService.get(id));
+	    } catch (IllegalArgumentException e) {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+	    }
 	}
 
 	@PostMapping()
@@ -51,9 +64,12 @@ public class SesionController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Sesion> update(@PathVariable Integer id, @RequestBody Sesion sesion) {
-		Sesion updatedSesion = sesionService.update(id, sesion);
-		return ResponseEntity.ok(updatedSesion);
+	public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody Sesion sesion) {
+	    try {
+	        return ResponseEntity.ok(sesionService.update(id, sesion));
+	    } catch (IllegalArgumentException e) {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+	    }
 	}
 	
 	@DeleteMapping("/{id}")

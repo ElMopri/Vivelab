@@ -31,18 +31,26 @@ public class ProgramacionController {
 		return ResponseEntity.ok(programacionService.list());
 	}
 	
-    @GetMapping("/listByNombreTallerOrFechaInicioOrFechaFin")
-    public ResponseEntity<List<Programacion>> listByNombreTallerOrFechaInicioOrFechaFin(
-            @RequestParam(required = false) String nombre,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin) {
-        List<Programacion> programaciones = programacionService.listByNombreTallerOrFechaInicioOrFechaFin(nombre, fechaInicio, fechaFin);
-        return ResponseEntity.ok(programaciones);
-    }
+	@GetMapping("/listByNombreTallerOrFechaInicioOrFechaFin")
+	public ResponseEntity<?> listByNombreTallerOrFechaInicioOrFechaFin(
+	        @RequestParam(required = false) String nombre,
+	        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
+	        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin) {
+	    try {
+	        List<Programacion> programaciones = programacionService.listByNombreTallerOrFechaInicioOrFechaFin(nombre, fechaInicio, fechaFin);
+	        return ResponseEntity.ok(programaciones);
+	    } catch (IllegalArgumentException e) {
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+	    }
+	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Programacion> get(@PathVariable Integer id) {
-		return ResponseEntity.ok(programacionService.get(id));
+	public ResponseEntity<?> get(@PathVariable Integer id) {
+	    try {
+	        return ResponseEntity.ok(programacionService.get(id));
+	    } catch (IllegalArgumentException e) {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+	    }
 	}
 	
 	@PostMapping()
@@ -52,9 +60,12 @@ public class ProgramacionController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Programacion> update(@PathVariable Integer id, @RequestBody Programacion programacion) {
-		Programacion updatedProgramacion = programacionService.update(id, programacion);
-		return ResponseEntity.ok(updatedProgramacion);
+	public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody Programacion programacion) {
+	    try {
+	        return ResponseEntity.ok(programacionService.update(id, programacion));
+	    } catch (IllegalArgumentException e) {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+	    }
 	}
 	
 	@DeleteMapping("/{id}")

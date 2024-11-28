@@ -32,22 +32,21 @@ public class ProgramacionService {
 	}
 	
 	public Programacion get(Integer id) {
-		Optional<Programacion> programacionOpt = programacionRepository.findById(id);
-		if (programacionOpt.isPresent()) {
-			return programacionOpt.get();
-		}
-		return null;
+		return programacionRepository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("No existe una programación con id " + id));
 	}
 
 	public Programacion create(Programacion programacion) {
+		// Opcional: Añadir validaciones adicionales para la creación.
 		return programacionRepository.save(programacion);
 	}
 
 	public Programacion update(Integer id, Programacion programacion) {
 		Optional<Programacion> programacionOpt = programacionRepository.findById(id);
 		if (!programacionOpt.isPresent()) {
-			return null;
+			throw new IllegalArgumentException("No existe una programación con id " + id);
 		}
+
 		Programacion updatedProgramacion = programacionOpt.get();
 		updatedProgramacion.setColegio(programacion.getColegio());
 		updatedProgramacion.setTaller(programacion.getTaller());
@@ -59,21 +58,26 @@ public class ProgramacionService {
 		updatedProgramacion.setGrado(programacion.getGrado());
 		updatedProgramacion.setGrupo(programacion.getGrupo());
 		updatedProgramacion.setUbicacion(programacion.getUbicacion());
+
 		return programacionRepository.save(updatedProgramacion);
 	}
 
 	public Programacion delete(Integer id) {
 	    Optional<Programacion> programacionOpt = programacionRepository.findById(id);
 	    if (!programacionOpt.isPresent()) {
-	        throw new IllegalArgumentException("La programacion con id " + id + " no existe.");
+	        throw new IllegalArgumentException("No existe una programación con id " + id);
 	    }
+	    
 	    Programacion programacion = programacionOpt.get();
+	    
 	    if (inscripcionRepository.existsByProgramacion(programacion)) {
-	        throw new IllegalStateException("No se puede eliminar la programacion porque tiene inscripciones relacionadas.");
+	        throw new IllegalStateException("No se puede eliminar la programación porque tiene inscripciones relacionadas.");
 	    }
+	    
 	    if (sesionRepository.existsByProgramacion(programacion)) {
-	        throw new IllegalStateException("No se puede eliminar la programacion porque tiene sesiones relacionadas.");
+	        throw new IllegalStateException("No se puede eliminar la programación porque tiene sesiones relacionadas.");
 	    }
+	    
 	    programacionRepository.delete(programacion);
 	    return programacion;
 	}
