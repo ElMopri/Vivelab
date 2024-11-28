@@ -34,38 +34,36 @@ public class InscripcionService {
     }
 
     public Inscripcion get(Integer id) {
-        Optional<Inscripcion> inscripcionOpt = inscripcionRepository.findById(id);
-        if (inscripcionOpt.isPresent()) {
-            return inscripcionOpt.get();
-        } else {
-            throw new RuntimeException("Inscripción no encontrada con ID: " + id);
-        }
+        return inscripcionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Inscripción no encontrada con ID: " + id));
     }
 
     public Inscripcion create(Inscripcion inscripcion) {
+        if (inscripcionRepository.existsByParticipanteAndProgramacion(inscripcion.getParticipante(), inscripcion.getProgramacion())) {
+            throw new IllegalArgumentException("Ya existe una inscripción con este participante y programación.");
+        }
         return inscripcionRepository.save(inscripcion);
     }
 
     public Inscripcion update(Integer id, Inscripcion inscripcion) {
-        Optional<Inscripcion> inscripcionOpt = inscripcionRepository.findById(id);
-        if (!inscripcionOpt.isPresent()) {
+        Optional<Inscripcion> existingInscripcionOpt = inscripcionRepository.findById(id);
+        if (!existingInscripcionOpt.isPresent()) {
             throw new RuntimeException("Inscripción no encontrada para actualizar con ID: " + id);
         }
-        Inscripcion updatedInscripcion = inscripcionOpt.get();
-        updatedInscripcion.setParticipante(inscripcion.getParticipante());
-        updatedInscripcion.setProgramacion(inscripcion.getProgramacion());
-        updatedInscripcion.setFecha(inscripcion.getFecha());
-        return inscripcionRepository.save(updatedInscripcion);
+        if (inscripcionRepository.existsByParticipanteAndProgramacion(inscripcion.getParticipante(), inscripcion.getProgramacion())) {
+            throw new IllegalArgumentException("Ya existe otra inscripción con este participante y programación.");
+        }
+        Inscripcion existingInscripcion = existingInscripcionOpt.get();
+        existingInscripcion.setParticipante(inscripcion.getParticipante());
+        existingInscripcion.setProgramacion(inscripcion.getProgramacion());
+        existingInscripcion.setFecha(inscripcion.getFecha());
+        return inscripcionRepository.save(existingInscripcion);
     }
 
     public Inscripcion delete(Integer id) {
-        Optional<Inscripcion> inscripcionOpt = inscripcionRepository.findById(id);
-        if (inscripcionOpt.isPresent()) {
-            Inscripcion inscripcion = inscripcionOpt.get();
-            inscripcionRepository.delete(inscripcion);
-            return inscripcion;
-        } else {
-            throw new RuntimeException("Inscripción no encontrada para eliminar con ID: " + id);
-        }
+        Inscripcion inscripcion = inscripcionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Inscripción no encontrada para eliminar con ID: " + id));
+        inscripcionRepository.delete(inscripcion);
+        return inscripcion;
     }
 }
