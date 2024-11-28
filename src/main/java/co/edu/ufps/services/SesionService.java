@@ -2,16 +2,19 @@ package co.edu.ufps.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.edu.ufps.entities.Asistente;
+import co.edu.ufps.entities.Inscripcion;
 import co.edu.ufps.entities.Participante;
 import co.edu.ufps.entities.Programacion;
 import co.edu.ufps.entities.Sesion;
 import co.edu.ufps.repositories.AsistenteRepository;
 import co.edu.ufps.repositories.EvidenciaRepository;
+import co.edu.ufps.repositories.InscripcionRepository;
 import co.edu.ufps.repositories.ParticipanteRepository;
 import co.edu.ufps.repositories.ProgramacionRepository;
 import co.edu.ufps.repositories.SesionRepository;
@@ -32,6 +35,9 @@ public class SesionService {
 	
 	@Autowired
 	private EvidenciaRepository evidenciaRepository;
+	
+	@Autowired
+	private InscripcionRepository inscripcionRepository;
 	
 	public List<Sesion> list() {
 		return sesionRepository.findAll();
@@ -111,4 +117,27 @@ public class SesionService {
 	    sesionRepository.delete(sesion);
 	    return sesion;
 	}
+	
+    public Double porcentajeAsistencia(Integer sesionId) {
+	    Optional<Sesion> sesionOpt = sesionRepository.findById(sesionId);
+	    if (!sesionOpt.isPresent()) {
+	        throw new IllegalArgumentException("No existe una sesión con id " + sesionId);
+	    }
+	    Sesion sesion = sesionOpt.get();
+        Programacion programacion = sesion.getProgramacion();
+        List<Inscripcion> inscripciones = inscripcionRepository.findByProgramacion(programacion);
+        List<Integer> participantesInscritosIds = inscripciones.stream()
+                .map(inscripcion -> inscripcion.getParticipante().getId())
+                .collect(Collectors.toList());
+        List<Asistente> asistentes = asistenteRepository.findBySesion(sesion);
+        long participantesAsistentes = asistentes.stream()
+                .filter(asistente -> participantesInscritosIds.contains(asistente.getParticipante().getId()))
+                .count();
+        double totalInscritos = participantesInscritosIds.size();
+        if (totalInscritos == 0) {
+            return 0.0;
+        }
+        double porcentaje = ((double)participantesAsistentes / totalInscritos) * 100;
+        return porcentaje;
+    }
 }

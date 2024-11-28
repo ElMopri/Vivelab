@@ -81,6 +81,13 @@ public class SesionController {
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 	    } catch (IllegalStateException e) {
 	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-	    }
+	    } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+	}
+	
+	@GetMapping("/porcentajeAsistencia/{sesionId}")
+	public Double porcentajeAsistencia(@PathVariable Integer sesionId){
+		return sesionService.porcentajeAsistencia(sesionId);
 	}
 }

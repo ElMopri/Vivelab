@@ -1,5 +1,7 @@
 package co.edu.ufps.repositories;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import co.edu.ufps.entities.Asistente;
@@ -11,4 +13,5 @@ public interface AsistenteRepository extends JpaRepository<Asistente, Integer> {
 	public boolean existsBySesionAndParticipante(Sesion sesion, Participante participante);
 	public boolean existsBySesion(Sesion sesion);
 	public boolean existsByParticipante(Participante participante);
+	public List<Asistente> findBySesion(Sesion sesion);
 }

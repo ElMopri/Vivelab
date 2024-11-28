@@ -1,5 +1,7 @@
 package co.edu.ufps.repositories;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import co.edu.ufps.entities.Inscripcion;
@@ -10,4 +12,5 @@ public interface InscripcionRepository extends JpaRepository<Inscripcion, Intege
 	public boolean existsByProgramacion(Programacion programacion);
 	public boolean existsByParticipante(Participante participante);
 	public boolean existsByParticipanteAndProgramacion(Participante participante, Programacion programacion);
+	public List<Inscripcion> findByProgramacion(Programacion programacion);
 }
