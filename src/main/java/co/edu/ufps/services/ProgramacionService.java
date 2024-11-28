@@ -31,13 +31,16 @@ public class ProgramacionService {
 		return programacionRepository.findAllByTaller_NombreContainingIgnoreCaseOrFechaInicioOrFechaFin(nombre, fechaInicio, fechaFin);
 	}
 	
+	public List<Programacion> listByNombreTaller(String nombre) {
+		return programacionRepository.findAllByTaller_nombreContainingIgnoreCase(nombre);
+	}
+	
 	public Programacion get(Integer id) {
 		return programacionRepository.findById(id)
 				.orElseThrow(() -> new IllegalArgumentException("No existe una programación con id " + id));
 	}
 
 	public Programacion create(Programacion programacion) {
-		// Opcional: Añadir validaciones adicionales para la creación.
 		return programacionRepository.save(programacion);
 	}
 
@@ -46,7 +49,6 @@ public class ProgramacionService {
 		if (!programacionOpt.isPresent()) {
 			throw new IllegalArgumentException("No existe una programación con id " + id);
 		}
-
 		Programacion updatedProgramacion = programacionOpt.get();
 		updatedProgramacion.setColegio(programacion.getColegio());
 		updatedProgramacion.setTaller(programacion.getTaller());
@@ -58,7 +60,6 @@ public class ProgramacionService {
 		updatedProgramacion.setGrado(programacion.getGrado());
 		updatedProgramacion.setGrupo(programacion.getGrupo());
 		updatedProgramacion.setUbicacion(programacion.getUbicacion());
-
 		return programacionRepository.save(updatedProgramacion);
 	}
 
@@ -67,17 +68,13 @@ public class ProgramacionService {
 	    if (!programacionOpt.isPresent()) {
 	        throw new IllegalArgumentException("No existe una programación con id " + id);
 	    }
-	    
 	    Programacion programacion = programacionOpt.get();
-	    
 	    if (inscripcionRepository.existsByProgramacion(programacion)) {
 	        throw new IllegalStateException("No se puede eliminar la programación porque tiene inscripciones relacionadas.");
 	    }
-	    
 	    if (sesionRepository.existsByProgramacion(programacion)) {
 	        throw new IllegalStateException("No se puede eliminar la programación porque tiene sesiones relacionadas.");
 	    }
-	    
 	    programacionRepository.delete(programacion);
 	    return programacion;
 	}

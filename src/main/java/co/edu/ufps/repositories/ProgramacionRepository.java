@@ -17,5 +17,5 @@ public interface ProgramacionRepository extends JpaRepository<Programacion, Inte
 	public boolean existsByInstructor(Instructor instructor);
 	public boolean existsByUbicacion(Ubicacion ubicacion);
 	public List<Programacion> findAllByTaller_NombreContainingIgnoreCaseOrFechaInicioOrFechaFin(String nombre, LocalDate fechaInicio, LocalDate fechaFin);
-
+	public List<Programacion> findAllByTaller_nombreContainingIgnoreCase(String nombre);
 }

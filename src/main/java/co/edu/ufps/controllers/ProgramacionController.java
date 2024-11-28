@@ -44,6 +44,15 @@ public class ProgramacionController {
 	    }
 	}
 	
+	@GetMapping("/listByNombreTaller/{nombreTaller}")
+	public ResponseEntity<?> listByNombreTaller(@PathVariable String nombreTaller) {
+	    try {
+	        return ResponseEntity.ok(programacionService.listByNombreTaller(nombreTaller));
+	    } catch (IllegalArgumentException e) {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+	    }
+	}
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<?> get(@PathVariable Integer id) {
 	    try {
