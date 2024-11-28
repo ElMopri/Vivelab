@@ -20,40 +20,60 @@ import co.edu.ufps.services.MunicipioService;
 @RestController
 @RequestMapping("/api/municipios")
 public class MunicipioController {
-	@Autowired
-	private MunicipioService municipioService;
-	
-	@GetMapping
-	public ResponseEntity<List<Municipio>> list() {
-		return ResponseEntity.ok(municipioService.list());
-	}
-	
-	@GetMapping("/{id}")
-	public ResponseEntity<Municipio> get(@PathVariable Integer id) {
-		return ResponseEntity.ok(municipioService.get(id));
-	}
-	
-	@PostMapping()
-	public ResponseEntity<Municipio> create(@RequestBody Municipio municipio) {
-		Municipio newMunicipio = municipioService.create(municipio);
-		return ResponseEntity.ok(newMunicipio);
-	}
-	
-	@PutMapping("/{id}")
-	public ResponseEntity<Municipio> update(@PathVariable Integer id, @RequestBody Municipio municipio) {
-		Municipio updatedMunicipio = municipioService.update(id, municipio);
-		return ResponseEntity.ok(updatedMunicipio);
-	}
-	
-	@DeleteMapping("/{id}")
-	public ResponseEntity<?> delete(@PathVariable Integer id) {
-	    try {
-	        Municipio deletedMunicipio = municipioService.delete(id);
-	        return ResponseEntity.ok(deletedMunicipio);
-	    } catch (IllegalArgumentException e) {
-	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-	    } catch (IllegalStateException e) {
-	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-	    }
-	}
+
+    @Autowired
+    private MunicipioService municipioService;
+
+    @GetMapping
+    public ResponseEntity<List<Municipio>> list() {
+        return ResponseEntity.ok(municipioService.list());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> get(@PathVariable Integer id) {
+        try {
+            Municipio municipio = municipioService.get(id);
+            return ResponseEntity.ok(municipio);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @PostMapping
+    public ResponseEntity<?> create(@RequestBody Municipio municipio) {
+        try {
+            Municipio newMunicipio = municipioService.create(municipio);
+            return ResponseEntity.status(HttpStatus.CREATED).body(newMunicipio);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al crear el municipio: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody Municipio municipio) {
+        try {
+            Municipio updatedMunicipio = municipioService.update(id, municipio);
+            return ResponseEntity.ok(updatedMunicipio);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al actualizar el municipio: " + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Integer id) {
+        try {
+            Municipio deletedMunicipio = municipioService.delete(id);
+            return ResponseEntity.ok(deletedMunicipio);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar el municipio: " + e.getMessage());
+        }
+    }
 }

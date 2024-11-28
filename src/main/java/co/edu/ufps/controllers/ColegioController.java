@@ -29,31 +29,40 @@ public class ColegioController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Colegio> get(@PathVariable Integer id) {
-		return ResponseEntity.ok(colegioService.get(id));
+	public ResponseEntity<?> get(@PathVariable Integer id) {
+		try {
+			Colegio colegio = colegioService.get(id);
+			return ResponseEntity.ok(colegio);
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		}
 	}
 
-	@PostMapping()
+	@PostMapping
 	public ResponseEntity<Colegio> create(@RequestBody Colegio colegio) {
 		Colegio newColegio = colegioService.create(colegio);
-		return ResponseEntity.ok(newColegio);
+		return ResponseEntity.status(HttpStatus.CREATED).body(newColegio);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Colegio> update(@PathVariable Integer id, @RequestBody Colegio colegio) {
-		Colegio updatedColegio = colegioService.update(id, colegio);
-		return ResponseEntity.ok(updatedColegio);
+	public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody Colegio colegio) {
+		try {
+			Colegio updatedColegio = colegioService.update(id, colegio);
+			return ResponseEntity.ok(updatedColegio);
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		}
 	}
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable Integer id) {
-	    try {
-	        Colegio deletedColegio = colegioService.delete(id);
-	        return ResponseEntity.ok(deletedColegio);
-	    } catch (IllegalArgumentException e) {
-	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-	    } catch (IllegalStateException e) {
-	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-	    }
+		try {
+			Colegio deletedColegio = colegioService.delete(id);
+			return ResponseEntity.ok(deletedColegio);
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		} catch (IllegalStateException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}
 	}
 }

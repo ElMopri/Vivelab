@@ -13,56 +13,56 @@ import co.edu.ufps.repositories.ParticipanteRepository;
 
 @Service
 public class ParticipanteService {
-	@Autowired
-	private ParticipanteRepository participanteRepository;
-	
-	@Autowired
-	private AsistenteRepository asistenteRepository;
-	
-	@Autowired
-	private InscripcionRepository inscripcionRepository;
+    @Autowired
+    private ParticipanteRepository participanteRepository;
 
-	public List<Participante> list() {
-		return participanteRepository.findAll();
-	}
-	
-	public Participante get(Integer id) {
-		Optional<Participante> participanteOpt = participanteRepository.findById(id);
-		if (participanteOpt.isPresent()) {
-			return participanteOpt.get();
-		}
-		return null;
-	}
+    @Autowired
+    private AsistenteRepository asistenteRepository;
 
-	public Participante create(Participante participante) {
-		return participanteRepository.save(participante);
-	}
+    @Autowired
+    private InscripcionRepository inscripcionRepository;
 
-	public Participante update(Integer id, Participante participante) {
-		Optional<Participante> participanteOpt = participanteRepository.findById(id);
-		if (!participanteOpt.isPresent()) {
-			return null;
-		}
-		Participante updatedParticipante = participanteOpt.get();
-		updatedParticipante.setNombre(participante.getNombre());
-		updatedParticipante.setColegio(participante.getColegio());
-		updatedParticipante.setTipoDocumento(participante.getTipoDocumento());
-		return participanteRepository.save(updatedParticipante);
-	}
+    public List<Participante> list() {
+        return participanteRepository.findAll();
+    }
 
-	public Participante delete(Integer id) {
-	    Optional<Participante> participanteOpt = participanteRepository.findById(id);
-	    if (!participanteOpt.isPresent()) {
-	        throw new IllegalArgumentException("El participante con id " + id + " no existe.");
-	    }
-	    Participante participante = participanteOpt.get();
-	    if (asistenteRepository.existsByParticipante(participante)) {
-	        throw new IllegalStateException("No se puede eliminar el participante porque tiene asistentes relacionados.");
-	    }
-	    if (inscripcionRepository.existsByParticipante(participante)) {
-	        throw new IllegalStateException("No se puede eliminar el participante porque tiene inscripciones relacionadas.");
-	    }
-	    participanteRepository.delete(participante);
-	    return participante;
-	}
+    public Participante get(Integer id) {
+        Optional<Participante> participanteOpt = participanteRepository.findById(id);
+        if (!participanteOpt.isPresent()) {
+            throw new IllegalArgumentException("El participante con id " + id + " no existe.");
+        }
+        return participanteOpt.get();
+    }
+
+    public Participante create(Participante participante) {
+        return participanteRepository.save(participante);
+    }
+
+    public Participante update(Integer id, Participante participante) {
+        Optional<Participante> participanteOpt = participanteRepository.findById(id);
+        if (!participanteOpt.isPresent()) {
+            throw new IllegalArgumentException("El participante con id " + id + " no existe.");
+        }
+        Participante updatedParticipante = participanteOpt.get();
+        updatedParticipante.setNombre(participante.getNombre());
+        updatedParticipante.setColegio(participante.getColegio());
+        updatedParticipante.setTipoDocumento(participante.getTipoDocumento());
+        return participanteRepository.save(updatedParticipante);
+    }
+
+    public Participante delete(Integer id) {
+        Optional<Participante> participanteOpt = participanteRepository.findById(id);
+        if (!participanteOpt.isPresent()) {
+            throw new IllegalArgumentException("El participante con id " + id + " no existe.");
+        }
+        Participante participante = participanteOpt.get();
+        if (asistenteRepository.existsByParticipante(participante)) {
+            throw new IllegalStateException("No se puede eliminar el participante porque tiene asistentes relacionados.");
+        }
+        if (inscripcionRepository.existsByParticipante(participante)) {
+            throw new IllegalStateException("No se puede eliminar el participante porque tiene inscripciones relacionadas.");
+        }
+        participanteRepository.delete(participante);
+        return participante;
+    }
 }

@@ -12,49 +12,62 @@ import co.edu.ufps.repositories.MunicipioRepository;
 
 @Service
 public class MunicipioService {
-	@Autowired
-	private MunicipioRepository municipioRepository;
-	
-	@Autowired
-	private ColegioRepository colegioRepository;
 
-	public List<Municipio> list() {
-		return municipioRepository.findAll();
-	}
-	
-	public Municipio get(Integer id) {
-		Optional<Municipio> municipioOpt = municipioRepository.findById(id);
-		if (municipioOpt.isPresent()) {
-			return municipioOpt.get();
-		}
-		return null;
-	}
+    @Autowired
+    private MunicipioRepository municipioRepository;
 
-	public Municipio create(Municipio municipio) {
-		return municipioRepository.save(municipio);
-	}
+    @Autowired
+    private ColegioRepository colegioRepository;
 
-	public Municipio update(Integer id, Municipio municipio) {
-		Optional<Municipio> municipioOpt = municipioRepository.findById(id);
-		if (!municipioOpt.isPresent()) {
-			return null;
-		}
-		Municipio updatedMunicipio = municipioOpt.get();
-		updatedMunicipio.setNombre(municipio.getNombre());
-		updatedMunicipio.setDane(municipio.getDane());
-		return municipioRepository.save(updatedMunicipio);
-	}
+    public List<Municipio> list() {
+        return municipioRepository.findAll();
+    }
 
-	public Municipio delete(Integer id) {
-	    Optional<Municipio> municipioOpt = municipioRepository.findById(id);
-	    if (!municipioOpt.isPresent()) {
-	        throw new IllegalArgumentException("El municipio con id " + id + " no existe.");
-	    }
-	    Municipio municipio = municipioOpt.get();
-	    if (colegioRepository.existsByMunicipio(municipio)) {
-	        throw new IllegalStateException("No se puede eliminar el municipio porque tiene colegios relacionados.");
-	    }
-	    municipioRepository.delete(municipio);
-	    return municipio;
-	}
+    public Municipio get(Integer id) {
+        Optional<Municipio> municipioOpt = municipioRepository.findById(id);
+        if (!municipioOpt.isPresent()) {
+            throw new IllegalArgumentException("El municipio con id " + id + " no existe.");
+        }
+        return municipioOpt.get();
+    }
+
+    public Municipio create(Municipio municipio) {
+        try {
+            return municipioRepository.save(municipio);
+        } catch (Exception e) {
+            throw new RuntimeException("Error al crear el municipio: " + e.getMessage(), e);
+        }
+    }
+
+    public Municipio update(Integer id, Municipio municipio) {
+        Optional<Municipio> municipioOpt = municipioRepository.findById(id);
+        if (!municipioOpt.isPresent()) {
+            throw new IllegalArgumentException("El municipio con id " + id + " no existe.");
+        }
+        Municipio updatedMunicipio = municipioOpt.get();
+        updatedMunicipio.setNombre(municipio.getNombre());
+        updatedMunicipio.setDane(municipio.getDane());
+        try {
+            return municipioRepository.save(updatedMunicipio);
+        } catch (Exception e) {
+            throw new RuntimeException("Error al actualizar el municipio: " + e.getMessage(), e);
+        }
+    }
+
+    public Municipio delete(Integer id) {
+        Optional<Municipio> municipioOpt = municipioRepository.findById(id);
+        if (!municipioOpt.isPresent()) {
+            throw new IllegalArgumentException("El municipio con id " + id + " no existe.");
+        }
+        Municipio municipio = municipioOpt.get();
+        if (colegioRepository.existsByMunicipio(municipio)) {
+            throw new IllegalStateException("No se puede eliminar el municipio porque tiene colegios relacionados.");
+        }
+        try {
+            municipioRepository.delete(municipio);
+            return municipio;
+        } catch (Exception e) {
+            throw new RuntimeException("Error al eliminar el municipio: " + e.getMessage(), e);
+        }
+    }
 }

@@ -20,45 +20,65 @@ import co.edu.ufps.services.InstructorService;
 @RestController
 @RequestMapping("/api/instructores")
 public class InstructorController {
-	@Autowired
-	private InstructorService instructorService;
-	
-	@GetMapping
-	public ResponseEntity<List<Instructor>> list() {
-		return ResponseEntity.ok(instructorService.list());
-	}
-	
-	@GetMapping("/listByNombre/{nombre}")
-	public ResponseEntity<List<Instructor>> listByNombre(@PathVariable String nombre) {
-		return ResponseEntity.ok(instructorService.listByNombre(nombre));
-	}
-	
-	@GetMapping("/{id}")
-	public ResponseEntity<Instructor> get(@PathVariable Integer id) {
-		return ResponseEntity.ok(instructorService.get(id));
-	}
-	
-	@PostMapping()
-	public ResponseEntity<Instructor> create(@RequestBody Instructor instructor) {
-		Instructor newInstructor = instructorService.create(instructor);
-		return ResponseEntity.ok(newInstructor);
-	}
-	
-	@PutMapping("/{id}")
-	public ResponseEntity<Instructor> update(@PathVariable Integer id, @RequestBody Instructor instructor) {
-		Instructor updatedInstructor = instructorService.update(id, instructor);
-		return ResponseEntity.ok(updatedInstructor);
-	}
-	
-	@DeleteMapping("/{id}")
-	public ResponseEntity<?> delete(@PathVariable Integer id) {
-	    try {
-	        Instructor deletedInstructor = instructorService.delete(id);
-	        return ResponseEntity.ok(deletedInstructor);
-	    } catch (IllegalArgumentException e) {
-	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-	    } catch (IllegalStateException e) {
-	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-	    }
-	}
+
+    @Autowired
+    private InstructorService instructorService;
+    
+    @GetMapping
+    public ResponseEntity<List<Instructor>> list() {
+        List<Instructor> instructors = instructorService.list();
+        return ResponseEntity.ok(instructors);
+    }
+    
+    @GetMapping("/listByNombre/{nombre}")
+    public ResponseEntity<List<Instructor>> listByNombre(@PathVariable String nombre) {
+        List<Instructor> instructors = instructorService.listByNombre(nombre);
+        return ResponseEntity.ok(instructors);
+    }
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<?> get(@PathVariable Integer id) {
+        try {
+            Instructor instructor = instructorService.get(id);
+            return ResponseEntity.ok(instructor);
+        } catch (IllegalArgumentException e) {
+            // Respuesta 404 si el instructor no existe
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                 .body("Instructor con id " + id + " no encontrado.");
+        }
+    }
+    
+    @PostMapping()
+    public ResponseEntity<Instructor> create(@RequestBody Instructor instructor) {
+        Instructor newInstructor = instructorService.create(instructor);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newInstructor);
+    }
+    
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody Instructor instructor) {
+        try {
+            Instructor updatedInstructor = instructorService.update(id, instructor);
+            return ResponseEntity.ok(updatedInstructor);
+        } catch (IllegalArgumentException e) {
+            // Respuesta 404 si el instructor no existe
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                 .body("Instructor con id " + id + " no encontrado.");
+        }
+    }
+    
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Integer id) {
+        try {
+            Instructor deletedInstructor = instructorService.delete(id);
+            return ResponseEntity.ok(deletedInstructor);
+        } catch (IllegalArgumentException e) {
+            // Respuesta 404 si el instructor no existe
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                 .body("El instructor con id " + id + " no existe.");
+        } catch (IllegalStateException e) {
+            // Respuesta 400 si el instructor tiene dependencias asociadas
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                                 .body(e.getMessage());
+        }
+    }
 }
