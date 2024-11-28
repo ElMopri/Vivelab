@@ -19,7 +19,7 @@ public class Rol {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	private String descripcion;
+	private String name;
 	
 	@ManyToMany(mappedBy="roles")
 	@JsonIgnore
