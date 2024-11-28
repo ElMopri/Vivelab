@@ -1,5 +1,6 @@
 package co.edu.ufps.repositories;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,4 +15,5 @@ public interface InscripcionRepository extends JpaRepository<Inscripcion, Intege
 	public boolean existsByParticipanteAndProgramacion(Participante participante, Programacion programacion);
 	public List<Inscripcion> findByProgramacion(Programacion programacion);
 	public List<Inscripcion> findAllByParticipante_NombreContainingIgnoreCase(String nombre);
+	public List<Inscripcion> findAllByFecha(LocalDate fecha);
 }

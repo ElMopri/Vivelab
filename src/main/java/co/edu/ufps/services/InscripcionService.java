@@ -1,5 +1,6 @@
 package co.edu.ufps.services;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,6 +36,10 @@ public class InscripcionService {
     
     public List<Inscripcion> listByParticipanteNombre(String participanteNombre) {
     	return inscripcionRepository.findAllByParticipante_NombreContainingIgnoreCase(participanteNombre);
+    }
+    
+    public List<Inscripcion> listByFecha(LocalDate fecha) {
+        return inscripcionRepository.findAllByFecha(fecha);
     }
 
     public Inscripcion get(Integer id) {

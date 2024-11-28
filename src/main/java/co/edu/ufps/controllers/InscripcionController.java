@@ -1,5 +1,6 @@
 package co.edu.ufps.controllers;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,11 @@ public class InscripcionController {
 	@GetMapping("/listByParticipanteNombre/{participanteNombre}")
 	public ResponseEntity<List<Inscripcion>> listByParticipanteNombre(@PathVariable String participanteNombre) {
 		return ResponseEntity.ok(inscripcionService.listByParticipanteNombre(participanteNombre));
+	}
+	
+	@GetMapping("/listByFecha/{fecha}")
+	public ResponseEntity<List<Inscripcion>> listByFecha(@PathVariable LocalDate fecha) {
+		return ResponseEntity.ok(inscripcionService.listByFecha(fecha));
 	}
 
 	@GetMapping("/programaciones/{programacionId}")
