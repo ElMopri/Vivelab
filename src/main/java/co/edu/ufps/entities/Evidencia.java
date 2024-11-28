@@ -29,4 +29,6 @@ public class Evidencia {
 	private String observaciones;
 	
 	private LocalDate fecha;
+	
+	private String archivo;
 }

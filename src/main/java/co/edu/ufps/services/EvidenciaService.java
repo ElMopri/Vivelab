@@ -51,6 +51,7 @@ public class EvidenciaService {
         existingEvidencia.setSesion(evidencia.getSesion());
         existingEvidencia.setObservaciones(evidencia.getObservaciones());
         existingEvidencia.setFecha(evidencia.getFecha());
+        existingEvidencia.setArchivo(evidencia.getArchivo());
         return evidenciaRepository.save(existingEvidencia);
     }
 
