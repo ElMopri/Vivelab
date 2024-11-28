@@ -42,7 +42,16 @@ public class InstructorController {
             Instructor instructor = instructorService.get(id);
             return ResponseEntity.ok(instructor);
         } catch (IllegalArgumentException e) {
-            // Respuesta 404 si el instructor no existe
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                 .body("Instructor con id " + id + " no encontrado.");
+        }
+    }
+    
+    @GetMapping("/sesiones/{id}")
+    public ResponseEntity<?> getSesiones(@PathVariable Integer id) {
+        try {
+            return ResponseEntity.ok(instructorService.get(id).getSesiones());
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                                  .body("Instructor con id " + id + " no encontrado.");
         }
