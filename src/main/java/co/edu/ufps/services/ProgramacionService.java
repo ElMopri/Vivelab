@@ -1,5 +1,6 @@
 package co.edu.ufps.services;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +27,10 @@ public class ProgramacionService {
 		return programacionRepository.findAll();
 	}
 	
+	public List<Programacion> listByNombreTallerOrFechaInicioOrFechaFin(String nombre, LocalDate fechaInicio, LocalDate fechaFin) {
+		return programacionRepository.findAllByTaller_NombreContainingIgnoreCaseOrFechaInicioOrFechaFin(nombre, fechaInicio, fechaFin);
+	}
+	
 	public Programacion get(Integer id) {
 		Optional<Programacion> programacionOpt = programacionRepository.findById(id);
 		if (programacionOpt.isPresent()) {
@@ -46,8 +51,8 @@ public class ProgramacionService {
 		Programacion updatedProgramacion = programacionOpt.get();
 		updatedProgramacion.setColegio(programacion.getColegio());
 		updatedProgramacion.setTaller(programacion.getTaller());
-		updatedProgramacion.setFecha_inicio(programacion.getFecha_inicio());
-		updatedProgramacion.setFecha_fin(programacion.getFecha_fin());
+		updatedProgramacion.setFechaInicio(programacion.getFechaInicio());
+		updatedProgramacion.setFechaFin(programacion.getFechaFin());
 		updatedProgramacion.setCantidad(programacion.getCantidad());
 		updatedProgramacion.setObservacion(programacion.getObservacion());
 		updatedProgramacion.setInstructor(programacion.getInstructor());

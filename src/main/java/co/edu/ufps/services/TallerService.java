@@ -22,6 +22,10 @@ public class TallerService {
 		return tallerRepository.findAll();
 	}
 	
+	public List<Taller> listByNombre(String nombre) {
+		return tallerRepository.findAllByNombreContainingIgnoreCase(nombre);
+	}
+	
 	public Taller get(Integer id) {
 		Optional<Taller> tallerOpt = tallerRepository.findById(id);
 		if (tallerOpt.isPresent()) {

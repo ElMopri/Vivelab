@@ -26,6 +26,10 @@ public class InstructorService {
 		return instructorRepository.findAll();
 	}
 	
+	public List<Instructor> listByNombre(String nombre) {
+		return instructorRepository.findAllByNombreContainingIgnoreCase(nombre);
+	}
+	
 	public Instructor get(Integer id) {
 		Optional<Instructor> instructorOpt = instructorRepository.findById(id);
 		if (instructorOpt.isPresent()) {

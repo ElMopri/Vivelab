@@ -1,8 +1,10 @@
 package co.edu.ufps.controllers;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.ufps.entities.Programacion;
@@ -27,6 +30,15 @@ public class ProgramacionController {
 	public ResponseEntity<List<Programacion>> list() {
 		return ResponseEntity.ok(programacionService.list());
 	}
+	
+    @GetMapping("/listByNombreTallerOrFechaInicioOrFechaFin")
+    public ResponseEntity<List<Programacion>> listByNombreTallerOrFechaInicioOrFechaFin(
+            @RequestParam(required = false) String nombre,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin) {
+        List<Programacion> programaciones = programacionService.listByNombreTallerOrFechaInicioOrFechaFin(nombre, fechaInicio, fechaFin);
+        return ResponseEntity.ok(programaciones);
+    }
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<Programacion> get(@PathVariable Integer id) {

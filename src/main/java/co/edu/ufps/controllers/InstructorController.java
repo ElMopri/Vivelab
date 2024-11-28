@@ -28,6 +28,11 @@ public class InstructorController {
 		return ResponseEntity.ok(instructorService.list());
 	}
 	
+	@GetMapping("/listByNombre/{nombre}")
+	public ResponseEntity<List<Instructor>> listByNombre(@PathVariable String nombre) {
+		return ResponseEntity.ok(instructorService.listByNombre(nombre));
+	}
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<Instructor> get(@PathVariable Integer id) {
 		return ResponseEntity.ok(instructorService.get(id));

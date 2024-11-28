@@ -28,6 +28,11 @@ public class TallerController {
 		return ResponseEntity.ok(tallerService.list());
 	}
 	
+	@GetMapping("/listByNombre/{nombre}")
+	public ResponseEntity<List<Taller>> listByNombre(@PathVariable String nombre) {
+		return ResponseEntity.ok(tallerService.listByNombre(nombre));
+	}
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<Taller> get(@PathVariable Integer id) {
 		return ResponseEntity.ok(tallerService.get(id));

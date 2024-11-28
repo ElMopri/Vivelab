@@ -33,9 +33,9 @@ public class Programacion {
 	@JoinColumn(name = "taller_id")
 	private Taller taller;
 	
-	private LocalDate fecha_inicio;
+	private LocalDate fechaInicio;
 	
-	private LocalDate fecha_fin;
+	private LocalDate fechaFin;
 	
 	private Integer cantidad;
 	
