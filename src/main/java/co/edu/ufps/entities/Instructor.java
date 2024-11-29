@@ -11,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -35,4 +36,7 @@ public class Instructor {
 	@OneToMany(mappedBy = "instructor", cascade = CascadeType.ALL)
 	@JsonIgnore
 	List<Sesion> sesiones = null;
+	
+    @OneToOne(mappedBy = "instructor")
+    private Usuario usuario;
 }
