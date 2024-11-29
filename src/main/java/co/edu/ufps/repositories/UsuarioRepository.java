@@ -9,6 +9,8 @@ import co.edu.ufps.entities.Usuario;
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer>{
+	
+	public Usuario findByUsernameAndPassword(String username, String password);
 
 	//buscar un usuario mediante su nombre
 		Optional<Usuario> findByUsername(String username);

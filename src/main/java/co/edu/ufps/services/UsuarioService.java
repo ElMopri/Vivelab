@@ -23,6 +23,10 @@ public class UsuarioService {
 	@Autowired
 	public InstructorRepository instructorRepository;
 	
+	public Usuario findByUsernameAndPassword(String username, String password) {
+	    return usuarioRepository.findByUsernameAndPassword(username, password);
+	}
+	
 	public Usuario setInstructor(Integer usuarioId, Integer instructorId) {
         Optional<Usuario> usuarioOpt = usuarioRepository.findById(usuarioId);
         if (!usuarioOpt.isPresent()) {

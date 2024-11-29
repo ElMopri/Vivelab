@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,11 +18,22 @@ import co.edu.ufps.entities.Rol;
 import co.edu.ufps.entities.Usuario;
 import co.edu.ufps.services.UsuarioService;
 
+@CrossOrigin(origins = {"http://127.0.0.1:5501", "http://localhost:5501"}, allowCredentials = "true")
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("/api/usuarios")
 public class UsuarioController {
 	@Autowired
 	private UsuarioService usuarioService;
+	
+	@PostMapping("/login")
+	public ResponseEntity<?> login(@RequestBody Usuario usuario) {
+	    Usuario user = usuarioService.findByUsernameAndPassword(usuario.getUsername(), usuario.getPassword());
+	    if (user != null) {
+	        return ResponseEntity.ok(user);
+	    } else {
+	        return ResponseEntity.status(401).body("Credenciales inválidas");
+	    }
+	}
 	
 	@PutMapping("/cambiarRol/{usuarioId}/{instructorId}")
 	public ResponseEntity<Usuario> setRol(@PathVariable Integer usuarioId, @PathVariable Integer instructorId) {
