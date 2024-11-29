@@ -27,6 +27,11 @@ public class SesionController {
 	public ResponseEntity<List<Sesion>> list() {
 		return ResponseEntity.ok(sesionService.list());
 	}
+	
+	@GetMapping("/listByProgramacionTallerNombre/{nombre}")
+	public ResponseEntity<List<Sesion>> listByProgramacionTallerNombre(@PathVariable String nombre) {
+		return ResponseEntity.ok(sesionService.listByProgramacionTallerNombre(nombre));
+	}
 
 	@GetMapping("/programaciones/{programacionId}")
 	public ResponseEntity<?> listByProgramacionId(@PathVariable Integer programacionId) {

@@ -62,6 +62,15 @@ public class ProgramacionController {
 	    }
 	}
 	
+	@GetMapping("/getCantidad/{id}")
+	public ResponseEntity<?> getCantidad(@PathVariable Integer id) {
+	    try {
+	        return ResponseEntity.ok(programacionService.get(id).getInscripciones().size());
+	    } catch (IllegalArgumentException e) {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+	    }
+	}
+	
 	@PostMapping()
 	public ResponseEntity<Programacion> create(@RequestBody Programacion programacion) {
 		Programacion newProgramacion = programacionService.create(programacion);

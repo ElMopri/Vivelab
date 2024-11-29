@@ -42,6 +42,10 @@ public class SesionService {
 	public List<Sesion> list() {
 		return sesionRepository.findAll();
 	}
+	
+	public List<Sesion> listByProgramacionTallerNombre(String nombre) {
+		return sesionRepository.findAllByProgramacion_Taller_NombreContainingIgnoreCase(nombre);
+	}
 
 	public List<Sesion> listByProgramacionId(Integer programacionId) {
 		Optional<Programacion> programacionOpt = programacionRepository.findById(programacionId);
