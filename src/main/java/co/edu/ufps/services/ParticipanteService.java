@@ -25,6 +25,10 @@ public class ParticipanteService {
     public List<Participante> list() {
         return participanteRepository.findAll();
     }
+    
+    public List<Participante> listByNombre(String nombre) {
+        return participanteRepository.findAllByNombreContainingIgnoreCase(nombre);
+    }
 
     public Participante get(Integer id) {
         Optional<Participante> participanteOpt = participanteRepository.findById(id);

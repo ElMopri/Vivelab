@@ -28,6 +28,11 @@ public class ParticipanteController {
     public ResponseEntity<List<Participante>> list() {
         return ResponseEntity.ok(participanteService.list());
     }
+    
+    @GetMapping("/listByNombre/{nombre}")
+    public ResponseEntity<List<Participante>> listByNombre(@PathVariable String nombre) {
+        return ResponseEntity.ok(participanteService.listByNombre(nombre));
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> get(@PathVariable Integer id) {
